@@ -180,7 +180,7 @@
 							</tr>
 							<tr>
 								<td>비밀번호</td>
-								<td><input type="password" id="loginPwd" name="loginPwd"></td>
+								<td><input type="password" id="loginPwd" name="loginPwd/"></td>
 							</tr>
 							<tr>
 								<td colspan=2 align="right"><a href="#">아이디/비밀번호 찾기</a></td>

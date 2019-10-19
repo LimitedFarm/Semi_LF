@@ -13,6 +13,7 @@ public class Customer implements Serializable{
 	private int cid;
 	private String userId;
 	private String userPwd;
+	private String userName;
 	private String address;
 	private String phone;
 	private String email;
@@ -23,11 +24,12 @@ public class Customer implements Serializable{
 	
 	public Customer() {}
 
-	public Customer(int cid, String userId, String userPwd, String address, String phone, String email, Date joinDate,
+	public Customer(int cid, String userId, String userPwd,String userName, String address, String phone, String email, Date joinDate,
 			Date modifyDate, String groupNum, String status) {
 		this.cid = cid;
 		this.userId = userId;
 		this.userPwd = userPwd;
+		this.userName = userName;
 		this.address = address;
 		this.phone = phone;
 		this.email = email;
@@ -59,6 +61,14 @@ public class Customer implements Serializable{
 
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getAddress() {
@@ -123,11 +133,9 @@ public class Customer implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Customer [cid=" + cid + ", userId=" + userId + ", userPwd=" + userPwd + ", address=" + address
-				+ ", phone=" + phone + ", email=" + email + ", joinDate=" + joinDate + ", modifyDate=" + modifyDate
-				+ ", groupNum=" + groupNum + ", status=" + status + "]";
+		return "Customer [cid=" + cid + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
+				+ ", address=" + address + ", phone=" + phone + ", email=" + email + ", joinDate=" + joinDate
+				+ ", modifyDate=" + modifyDate + ", groupNum=" + groupNum + ", status=" + status + "]";
 	}
-
-	
 	
 }

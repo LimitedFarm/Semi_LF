@@ -47,6 +47,7 @@ public class MenubarDao {
 				cuInfo = new Customer(rs.getInt("cid"),
 									rs.getString("userid"),
 									rs.getString("userPwd"),
+									rs.getString("userName"),
 									rs.getString("address"),
 									rs.getString("phone"),
 									rs.getString("email"),
@@ -118,7 +119,7 @@ public class MenubarDao {
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				adInfo = new Admin(rs.getInt("adi"),
+				adInfo = new Admin(rs.getInt("aid"),
 									rs.getInt("ADMIN_LEVEL"),
 									rs.getInt("cid"));
 				

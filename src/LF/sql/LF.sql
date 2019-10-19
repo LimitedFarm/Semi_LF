@@ -299,6 +299,7 @@ CREATE TABLE Customer (
 	cId	NUMBER		NOT NULL,
 	userId	NVARCHAR2(12)		NOT NULL,
 	userPwd	NVARCHAR2(20)		NOT NULL,
+    userName	NVARCHAR2(20)		NOT NULL,
 	address	NVARCHAR2(50)		NOT NULL,
 	phone	NVARCHAR2(11)		NOT NULL,
 	email	NVARCHAR2(50)		NOT NULL,
@@ -319,6 +320,8 @@ COMMENT ON COLUMN Customer.cId IS '시퀀스를 통한 회원번호';
 COMMENT ON COLUMN Customer.userId IS '회원아이디';
 
 COMMENT ON COLUMN Customer.userPwd IS '회원비밀번호';
+
+COMMENT ON COLUMN Customer.userName IS '유저 이름';
 
 COMMENT ON COLUMN Customer.address IS '회원 주소';
 

@@ -167,41 +167,32 @@ table th {
 								$customerTable = $("#cuTable");
 								$customerTable.html(""); // 초기화
 								
-								/* var $tr = $("<tr>");
-								var $writerTd = $("<td>").text().css("width","100px");
-								var $contentTd = $("<td>").text(data[key].rContent).css("width","400px");
-								var $dateTd = $("<td>").text(data[key].createDate).css("width","200px");
+							
 								
-								$tr.append($writerTd);
-								$tr.append($contentTd);
-								$tr.append($dateTd);
-								$replyTable.append($tr);
-								 */
-								
-									for ( var key in data) {
-											var $headerTr = $("<tr>");
-											var $headerCid = $("<td>").text("번호").css("width", "50px");
-											var $headerId = $("<td>").text("아이디").css("width", "150px");
-											var $tr = $("<tr>");
-											var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid"+data[key].cid,"value":data[key].cid});
-											var $writerTd = $("<td>").text(data[key].cid).css("width","50px");
-											var $contentTd = $("<td>").text(data[key].userId).css("width","150px");
+								for ( var key in data) {
+										var $headerTr = $("<tr>");
+										var $headerCid = $("<td>").text("번호").css("width", "50px");
+										var $headerId = $("<td>").text("아이디").css("width", "150px");
+										var $tr = $("<tr>");
+										var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid"+data[key].cid,"value":data[key].cid});
+										var $writerTd = $("<td>").text(data[key].cid).css("width","50px");
+										var $contentTd = $("<td>").text(data[key].userId).css("width","150px");
 
-											$headerTr.append($headerCid);
-											$headerTr.append($headerId);
-											$customerTable.append($headerTr);
-											$tr.append($hiddenInput);
-											$tr.append($writerTd);
-											$tr.append($contentTd);
-											$customerTable.append($tr);
-										}
-
+										$headerTr.append($headerCid);
+										$headerTr.append($headerId);
+										$customerTable.append($headerTr);
+										$tr.append($hiddenInput);
+										$tr.append($writerTd);
+										$tr.append($contentTd);
+										$customerTable.append($tr);
 									}
-								});
+								
+								}
+							});
 
-							}
+						}
 
-						});
+					});
 
 			});
 

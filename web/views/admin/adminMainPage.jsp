@@ -10,7 +10,7 @@
 	
 </style>
 <body>
-	<%@ include file="../common/menubar.jsp" %>
+	<%@ include file = "../admin/adminMenubar.jsp" %>
 	
 </body>
 </html>

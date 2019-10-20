@@ -1,5 +1,3 @@
-
-</html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -51,7 +49,7 @@ table th {
 </style>
 </head>
 <body>
-	<%@ include file="../common/menubar.jsp" %>
+	<%@ include file = "../admin/adminMenubar.jsp" %>
 	<div class="container headerUnder" style="">
 		<h1>&nbsp;&nbsp; 판매자 관리</h1>
 		<div id="insertCustomer">

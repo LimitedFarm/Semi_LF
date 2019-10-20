@@ -85,7 +85,7 @@
 	}
 </style>
 </head>
-<body style="height:1500px">
+<body>
 	<!-- header역할을 하며 로그인, 회원가입, 메뉴바를 열수 있는 버튼을 생성 -->
 	<div class="navbar navbar-expand-sm bg-light navbar-dark fixed-top row" style="min-width: 1200px; z-index:1055; float:top;" >
 		<div class="headerNavi col-sm-1" align="left" >
@@ -134,7 +134,7 @@
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 			<%} else {%>
-				<button type="button" class="btn btn-light" id="">3</button>
+				<button type="button" class="btn btn-light" id="adminPage">관리자페이지</button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
@@ -215,24 +215,13 @@
 				}
 			});
 
-			// 나중에 수정 부분
-			$("#before0").click(function() {
-				alert($(this).attr("id"));
-			});
-			$("#before1").click(function() {
-				alert($(this).attr("id"));
-			});
-			$("#before2").click(function() {
-				alert($(this).attr("id"));
-			});
-			$("#before3").click(function() {
-				alert($(this).attr("id"));
-			});
-			$("#before4").click(function() {
-				alert($(this).attr("id"));
-			});
-			$("#before5").click(function() {
-				alert($(this).attr("id"));
+			// 일반회원 버튼
+			
+			// 판매자 버튼
+			
+			// 관리자 버튼
+			$("#adminPage").click(function(){
+				location.href="../admin/adminMainPage.jsp"
 			});
 
 			/* 로그인 기능 */

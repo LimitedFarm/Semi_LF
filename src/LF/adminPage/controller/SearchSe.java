@@ -1,10 +1,8 @@
 package LF.adminPage.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,20 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import LF.adminPage.model.service.AdminService;
-import LF.adminPage.model.vo.PageInfo;
-import LF.member.model.vo.Customer;
+import LF.member.model.vo.Seller;
 
 /**
- * Servlet implementation class SearchCu
+ * Servlet implementation class SearchSe
  */
-@WebServlet("/searchCu.ad")
-public class SearchCu extends HttpServlet {
+@WebServlet("/searchSe.ad")
+public class SearchSe extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SearchCu() {
+    public SearchSe() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,20 +34,17 @@ public class SearchCu extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 찾을 유저의 아이디
-		String searchId = request.getParameter("searchId");
-		
+		String searchbName = request.getParameter("sellerbName");
+				
 		// 일반 회원의 정보를 가져온다.
-		Customer searchCu = new AdminService().searchCustomer(searchId);
+		Seller searchCu = new AdminService().searchSeller(searchbName);
+			
+		ArrayList<Seller> throwSe = new ArrayList();
 		
-		ArrayList<Customer> throwCu = new ArrayList();
-		
-		throwCu.add(searchCu);
+		throwSe.add(searchCu);
 		
 		response.setContentType("application/json;");
-		new Gson().toJson(throwCu,response.getWriter());
-		
-		
-		
+		new Gson().toJson(throwSe,response.getWriter());
 	}
 
 	/**

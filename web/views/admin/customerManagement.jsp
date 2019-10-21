@@ -21,17 +21,18 @@
 	text-align:center;
 	border: 1px solid black;
 	padding: 5px;	
-	height: 600px;
+	width: 1200px;
+	height: 700px;
 	display:inline-block;
-	margin-top:160px
+	margin-top:160px;
+	min-width:1200px;
 }
 .adDiv {
 	display: inline-block;
 	padding: 5px;
 	height: 400px;
 	border:1px solid black;
-	width: 400px;
-	margin: 10px;
+	width: 500px;
 }
 #insertCustomer{
 	padding: 5px;
@@ -80,6 +81,7 @@ table th {
 		<div>
 			<div class="adDiv">
 				<!-- 간략한 회원 정보를 출력하는 div -->
+				<div style="width:500px; height: 500px;"> 
 				<table id="cuTable">
 					<tr>
 						<th width="50px">번호</th>
@@ -100,7 +102,39 @@ table th {
 						<%} %>
 					<%} %>
 				</table>
+				</div>
+				<div>
+					<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=1'"> << </button>
+			
+					<!-- 이전 페이지로(<) -->
+					<%if(currentPage <= 1) {%>
+						<button disabled> < </button>
+					<%} else{ %>
+						<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=currentPage-1 %>'"> < </button>
+					<%} %>
+			
+					<!-- 10개의 페이지 목록 -->
+					<%for(int p = startPage; p<=endPage; p++){ %>
+						<% if(p == currentPage){ %>
+					<button disabled><%=p %></button>
+						<%} else{%>
+					<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=p %>'"><%=p %></button>
+						<%} %>
+					<%} %>
+			
+					<!-- 다음 페이지로(>) -->
+					<%if(currentPage >= maxPage){ %>
+						<button disabled> > </button>
+					<%}else{ %>
+						<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=currentPage+1 %>'"> > </button>
+					<%} %>
+			
+					<!-- 맨 끝으로(>>) -->
+					<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=maxPage %>'"> >> </button>
+				</div>
 			</div>
+			
+			
 			<div class="adDiv" id="customerInfo">
 				<!-- 회원 상세 정보를 출력하는 div -->
 				<div>
@@ -131,16 +165,15 @@ table th {
 	<script>
 		$(function() {
 			// 회원 정보 테이블에 데이터 넣기
-			$(function(){
-				$(document).on('mouseenter', "#cuTable td", function(){
-					$(this).parent().css({"background":"darkgray","cursor":"pointer"});
-				});
-				$(document).on('mouseout', "#cuTable td", function(){
-					$(this).parent().css({"background":"black"});
-				});
-				$(document).on('click', "#cuTable td", function(){
-					var cid=$(this).parent().children("input").val();
-					<% for(Customer cu : cuInfo) {%>
+			$(document).on('mouseenter', "#cuTable td", function(){
+				$(this).parent().css({"background":"darkgray","cursor":"pointer"});
+			});
+			$(document).on('mouseout', "#cuTable td", function(){
+				$(this).parent().css({"background":"black"});
+			});
+			$(document).on('click', "#cuTable td", function(){
+				var cid=$(this).parent().children("input").val();
+				<% for(Customer cu : cuInfo) {%>
 					if(<%=cu.getCid()%> == cid) {
 						$("#cuName").val("<%=cu.getUserName()%>");
 						$("#cuJoinDate").val("<%=cu.getJoinDate()%>");
@@ -149,17 +182,38 @@ table th {
 					}
 				<% } %>
 				
-				});
+			});
 				
-				// 찾기 기능
-				$("#searchCustomer").click(function(){
-					var searchId = $("#customerId").val();
-					if(searchId == ""){
-						
-					}else{
-						$.ajax({
-							url : "/Semi_LF/searchCu.ad",
-							type : "post",
+			// 찾기 기능
+			$("#searchCustomer").click(function(){
+				var searchId = $("#customerId").val();
+				if(searchId == ""){
+					$customerTable = $("#cuTable");
+					$customerTable.html(""); // 초기화
+					
+					var $headerTr = $("<tr>");
+					var $headerCid = $("<td>").text("번호").css("width", "50px");
+					var $headerId = $("<td>").text("아이디").css("width", "150px");
+					
+					$headerTr.append($headerCid);
+					$headerTr.append($headerId);
+					$customerTable.append($headerTr);
+					
+					<% for(Customer c : cuInfo) { %>
+						var $tr = $("<tr>");
+						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid<%=c.getCid()%>","value":"<%=c.getCid()%>"});
+						var $writerTd = $("<td>").text("<%=c.getCid()%>").css("width","50px");
+						var $contentTd = $("<td>").text("<%=c.getUserId()%>").css("width","150px");
+							$tr.append($hiddenInput);
+						$tr.append($writerTd);
+						$tr.append($contentTd);
+						$customerTable.append($tr);
+					
+					<%} %>
+				}else{
+					$.ajax({
+						url : "/Semi_LF/searchCu.ad",
+						type : "post",
 							data : {
 								searchId : searchId
 							},
@@ -194,7 +248,6 @@ table th {
 
 					});
 
-			});
 
 		});
 	</script>

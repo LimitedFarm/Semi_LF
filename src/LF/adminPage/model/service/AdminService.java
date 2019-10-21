@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import LF.adminPage.model.dao.AdminDao;
 import LF.member.model.vo.Customer;
+import LF.member.model.vo.Seller;
 public class AdminService {
 	
 	public AdminService() {}
@@ -41,15 +42,36 @@ public class AdminService {
 		
 		return searchCu;
 	}
-
-	public int getSearchIdCount(String searchId) {
+	
+	// 판매자 정보 찾기
+	public ArrayList<Seller> selectSeller(int currentPage, int limit) {
 		Connection conn = getConnection();
 		
-		int result = new AdminDao().getSearchIdCount(conn, searchId);
+		ArrayList<Seller> seInfo = new AdminDao().selectSeller(conn, currentPage, limit);
+		
+		close(conn);
+		
+		return seInfo;
+	}
+
+	public int getSeListCount() {
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().getSeListCount(conn);
 		
 		close(conn);
 		
 		return result;
+	}
+
+	public Seller searchSeller(String searchbName) {
+		Connection conn = getConnection();
+		
+		Seller seInfo = new AdminDao().searchSeller(conn, searchbName);
+		
+		close(conn);
+		
+		return seInfo;
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import LF.member.model.vo.Customer;
+import LF.member.model.vo.Seller;
 
 public class AdminDao {
 	Properties prop = new Properties();
@@ -140,20 +142,99 @@ public class AdminDao {
 		return searchCu;
 	}
 
-	public int getSearchIdCount(Connection conn, String searchId) {
+	public ArrayList<Seller> selectSeller(Connection conn, int currentPage, int limit) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int result =0;
+		ArrayList<Seller> seInfo = new ArrayList();
+		String query = prop.getProperty("selectSeller");
 		
-		String query = prop.getProperty("getSearchIdCount");
+		int startRow = (currentPage-1)*limit +1;	
+		int endRow = startRow + limit -1;
 		
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, searchId);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
 			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				Seller s = new Seller(rs.getInt("sid"),
+									rs.getString("bstatus"),
+									rs.getString("bName"),
+									rs.getString("bNum"),
+									rs.getString("cpNum"),
+									rs.getString("acNum"),
+									rs.getString("acName"),
+									rs.getString("bankName"),
+									rs.getDate("sJoinDate"),
+									rs.getDate("sModifyDate"),
+									rs.getInt("cid"),
+									rs.getInt("fid"));
+				
+				seInfo.add(s);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return seInfo;
+	}
+
+	public int getSeListCount(Connection conn) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		int result =0;
+		
+		String query = prop.getProperty("getSeListCount");
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
 			
 			if(rs.next()) {
 				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rs);
+		}
+		
+		
+		return result;
+	}
+
+	public Seller searchSeller(Connection conn, String searchbName) {
+		PreparedStatement pstmt = null;
+		ResultSet rs= null;
+		Seller seInfo = null;
+		String query = prop.getProperty("searchSeller");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, searchbName);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				seInfo = new Seller(rs.getInt("sid"),
+						rs.getString("bstatus"),
+						rs.getString("bName"),
+						rs.getString("bNum"),
+						rs.getString("cpNum"),
+						rs.getString("acNum"),
+						rs.getString("acName"),
+						rs.getString("bankName"),
+						rs.getDate("sJoinDate"),
+						rs.getDate("sModifyDate"),
+						rs.getInt("cid"),
+						rs.getInt("fid"));
 			}
 			
 		} catch (SQLException e) {
@@ -163,8 +244,7 @@ public class AdminDao {
 			close(rs);
 		}
 		
-		
-		return result;
+		return seInfo;
 	}
 	
 }

@@ -29,7 +29,7 @@ public class MenubarDao {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public Customer selectCustomer(Connection conn, String userId, String userPwd) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -69,7 +69,8 @@ public class MenubarDao {
 		
 		return cuInfo;
 	}
-
+	
+	
 	public Seller selectSeller(Connection conn, int cid) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

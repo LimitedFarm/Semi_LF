@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* 토글 버튼의 css */
-.toggleBG {
+.toggleBG{
 	display:inline-block;
 	background: #CCCCCC;
 	width: 70px;
@@ -9,7 +9,7 @@
 	border-radius: 15px;
 }
 
-.toggleFG {
+.toggleFG{
 	background: #FFFFFF;
 	float:left;
 	width: 20px;

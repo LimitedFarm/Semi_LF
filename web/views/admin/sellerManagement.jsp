@@ -224,7 +224,7 @@
 					
 					<% for(Seller s : seInfo) { %>
 						var $tr = $("<tr>");
-						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid<%=s.getCid()%>", "value":"<%=s.getCid()%>" });
+						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid"+"<%=s.getCid()%>", "value":"<%=s.getCid()%>" });
 						var $sidTd = $("<td>").text("<%=s.getSid()%>").css("width","50px");
 						var $bNameTd = $("<td>").text("<%=s.getbName()%>").css("width","150px");
 						

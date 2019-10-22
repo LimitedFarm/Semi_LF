@@ -14,7 +14,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <title>회원 관리</title>
 <style>
 .outer{
@@ -192,19 +196,21 @@ table th {
 					$customerTable.html(""); // 초기화
 					
 					var $headerTr = $("<tr>");
-					var $headerCid = $("<td>").text("번호").css("width", "50px");
-					var $headerId = $("<td>").text("아이디").css("width", "150px");
+					var $headerCid = $("<th>").text("번호").css("width", "50px");
+					var $headerId = $("<th>").text("아이디").css("width", "150px");
 					
 					$headerTr.append($headerCid);
 					$headerTr.append($headerId);
 					$customerTable.append($headerTr);
 					
 					<% for(Customer c : cuInfo) { %>
+						alert("odk");
 						var $tr = $("<tr>");
 						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid<%=c.getCid()%>","value":"<%=c.getCid()%>"});
 						var $writerTd = $("<td>").text("<%=c.getCid()%>").css("width","50px");
 						var $contentTd = $("<td>").text("<%=c.getUserId()%>").css("width","150px");
-							$tr.append($hiddenInput);
+						
+						$tr.append($hiddenInput);
 						$tr.append($writerTd);
 						$tr.append($contentTd);
 						$customerTable.append($tr);
@@ -225,8 +231,8 @@ table th {
 								
 								for ( var key in data) {
 										var $headerTr = $("<tr>");
-										var $headerCid = $("<td>").text("번호").css("width", "50px");
-										var $headerId = $("<td>").text("아이디").css("width", "150px");
+										var $headerCid = $("<th>").text("번호").css("width", "50px");
+										var $headerId = $("<th>").text("아이디").css("width", "150px");
 										var $tr = $("<tr>");
 										var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid"+data[key].cid,"value":data[key].cid});
 										var $writerTd = $("<td>").text(data[key].cid).css("width","50px");

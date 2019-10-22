@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import LF.adminPage.model.vo.CReportList;
 import LF.member.model.vo.Customer;
 import LF.member.model.vo.Seller;
 
@@ -245,6 +246,87 @@ public class AdminDao {
 		}
 		
 		return seInfo;
+	}
+
+	public int updateSellerAuth(Connection conn, int sid, String bStatus) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("updateSellerAuth");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, bStatus);
+			pstmt.setInt(2, sid);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public ArrayList<CReportList> selectcReport(Connection conn, int currentPage, int limit) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<CReportList> crInfo = new ArrayList();
+		String query = prop.getProperty("selectcReport");
+		
+		int startRow = (currentPage-1)*limit +1;	
+		int endRow = startRow + limit -1;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				CReportList sr = new CReportList(rs.getInt("crid"),
+												rs.getInt("cid"),
+												rs.getString("noContent"),
+												rs.getDate("report_date"),
+												rs.getString("status"),
+												rs.getInt("sale_id"),
+												rs.getString("userid"));
+				crInfo.add(sr);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);			
+		}
+
+		return crInfo;
+	}
+
+	public int getCReportCount(Connection conn) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("getCReportCount");
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rs);
+		}
+		
+		return result;
 	}
 	
 }

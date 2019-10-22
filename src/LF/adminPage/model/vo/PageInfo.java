@@ -26,6 +26,7 @@ public class PageInfo implements Serializable{
 		this.startPage = startPage;
 		this.endPage = endPage;
 	}
+	
 	public int getCurrentPage() {
 		return currentPage;
 	}

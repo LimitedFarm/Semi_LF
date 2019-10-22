@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import LF.adminPage.model.dao.AdminDao;
+import LF.adminPage.model.vo.CReportList;
 import LF.member.model.vo.Customer;
 import LF.member.model.vo.Seller;
 public class AdminService {
@@ -72,6 +73,40 @@ public class AdminService {
 		close(conn);
 		
 		return seInfo;
+	}
+
+	public int updateSellerAuth(int sid, String bStatus) {
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().updateSellerAuth(conn, sid, bStatus);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	}
+
+	public ArrayList<CReportList> selectcReport(int currentPage, int limit) {
+		Connection conn = getConnection();
+		
+		ArrayList<CReportList> crInfo = new AdminDao().selectcReport(conn, currentPage, limit);
+		
+		close(conn);
+		
+		return crInfo;
+	}
+
+	public int crCount() {
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().getCReportCount(conn);
+		
+		return result;
 	}
 	
 	

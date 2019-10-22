@@ -78,7 +78,7 @@
 		<div class="cuDiv">
 		
 			<!-- 간략한 판매자 정보를 출력하는 div -->
-			<table class="table table-bordered" style="vertical-align:middle">
+			<table class="table table-bordered" id="seTable" style="vertical-align:middle">
 				<tr>
 					<th width="70px">번호</th>
 					<th width="150px">업체명</th>
@@ -94,6 +94,7 @@
 				<% }else {%>
 						<% for(Seller s : seInfo) {%>
 							<tr>
+								<input type="hidden" value="<%=s.getSid()%>" id="connectCid<%=s.getSid()%>">
 								<td><%=s.getSid() %></td>
 								<td><%=s.getbName() %></td>
 						 			<!-- 판매자 권한이 Y상태면 left값이 5 N일 경우 0으로 생성 --> 
@@ -109,7 +110,7 @@
 										</span>
 									<%} %>
 								</td>
-								<td><input type="button" value="권한 적용" id="insertAuthor<%=s.getSid()%>"></td> 
+								<td class="updateTds"><input type="button" value="권한 적용" id="insertAuthor<%=s.getSid()%>"></td> 
 							</tr>
 						<%} %>
 					<%} %>
@@ -148,62 +149,94 @@
 		<div class="cuDiv">
 			<!-- 판매자 상세 정보를 출력하는 div -->
 			<%if(true) {%><!-- id="infoTable" -->
-			<table class="table table-bordered" id="seTable" style="vertical-align:middle">
+			<table class="table table-bordered" style="vertical-align:middle">
 				<tr>
-					<td rowspan="5"><img src="../../sellerImg/examImg.png"
-						width="150px" height="200px"></td>
+					<td rowspan="5"><img src="#" id="getImg" width="150px" height="200px"></td>
 					<td>업체명</td>
-					<td>홍길동</td>
+					<td><input type="text" id="getbName" readonly></td>
 				</tr>
 				<tr>
 					<td>사업자번호</td>
-					<td>123</td>
+					<td><input type="text" id="getbNum" readonly></td>
 				</tr>
 				<tr>
 					<td>법인 번호</td>
-					<td>1234465</td>
+					<td><input type="text" id="getbCpNum" readonly></td>
 				</tr>
 				<tr>
 					<td>계좌 은행</td>
-					<td>국민</td>
+					<td><input type="text" id="getBankName" readonly></td>
 				</tr>
 				<tr>
 					<td>예금주</td>
-					<td>홍길동</td>
+					<td><input type="text" id="getAcName" readonly></td>
 				</tr>
 				<tr>
 					<td>계좌 번호</td>
-					<td colspan="2">11111111111</td>
+					<td colspan="2"><input type="text" id="getAcNum" readonly></td>
 				</tr>
 			</table>
-
+			
 			<%} %>
 		</div>
 
 	
 	<script>
 		$(function() {
-			// 회원 정보 테이블에 데이터 넣기
+			// 판매자 정보 테이블에 데이터 넣기
 			$(document).on('mouseenter', "#seTable td", function(){
 				$(this).parent().css({"background":"darkgray","cursor":"pointer"});
 			});
 			$(document).on('mouseout', "#seTable td", function(){
-				$(this).parent().css({"background":"black"});
+				$(this).parent().css({"background":"light"});
 			});
 			$(document).on('click', "#seTable td", function(){
 				var sid=$(this).parent().children("input").val();
+
 				<% for(Seller se : seInfo) {%>
 					if(<%=se.getSid()%> == sid) {
-						<%-- $("#cuName").val("<%=se.getUserName()%>");
-						$("#cuJoinDate").val("<%=se.getJoinDate()%>");
-						$("#cuEmail").val("<%=se.getEmail()%>");
-						$("#cuAddress").val("<%=se.getAddress()%>"); --%>
+						// 나중에 좀더 수정
+						$("#getbName").val("<%=se.getbName()%>");
+						$("#getbNum").val("<%=se.getbNum()%>");
+						$("#getbCpNum").val("<%=se.getCpNum()%>");
+						$("#getBankName").val("<%=se.getBankName()%>");
+						$("#getAcName").val("<%=se.getAcName()%>");
+						$("#getAcNum").val("<%=se.getAcNum()%>");
 					}
 				<% } %>
 				
 			});
+			// 권한 버튼을 통한 업데이트
+			$(document).on('click', ".updateTds input", function(){
+				
+				var sid=$(this).parent().parent().find("input").val();
+				
+				<% for(Seller se : seInfo) {%>
+					
+					if(<%=se.getSid()%> == sid) {
+						var sAuthor = parseInt($("#toggle<%=se.getSid() %>").css("left"));
+						var bStatus = "";
+						if(sAuthor >0){
+							bStatus = "Y";
+						}else{
+							bStatus = "N";
+						}
+						$.ajax({
+							url:"<%=request.getContextPath() %>/updateSeller.ad",
+							type:"post",
+							data:{sellerSid : sid, bStatus : bStatus},
+							success:function(data){
+								console.log(data);
+								// 나중에 해보자
+							}
+						});
+					} 
+				<% } %>
+				
+				
+			});
 			
-			// 찾기 기능
+			// 판매자 찾기 기능
 			$("#searchSeller").click(function(){
 				var sellerId = $("#sellerbName").val();
 				if(sellerId == ""){
@@ -211,10 +244,10 @@
 					$sellerTable.html(""); // 초기화
 					
 					var $headerTr = $("<tr>");
-					var $headerSid = $("<td>").text("번호").css("width", "50px");
-					var $headerbName = $("<td>").text("업체명").css("width", "150px");
-					var $headerbStatus = $("<td>").text(" N / Y ").css("width", "120px");
-					var $headerButton = $("<td>").text("권한 변경").css("width", "100px");
+					var $headerSid = $("<th>").text("번호").css("width", "70px");
+					var $headerbName = $("<th>").text("업체명").css("width", "150px");
+					var $headerbStatus = $("<th>").text(" N / Y ").css("width", "120px");
+					var $headerButton = $("<th>").text("권한 변경").css("width", "100px");
 					
 					$headerTr.append($headerSid);
 					$headerTr.append($headerbName);
@@ -224,7 +257,7 @@
 					
 					<% for(Seller s : seInfo) { %>
 						var $tr = $("<tr>");
-						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid"+"<%=s.getCid()%>", "value":"<%=s.getCid()%>" });
+						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid<%=s.getSid()%>", "value":"<%=s.getSid()%>" });
 						var $sidTd = $("<td>").text("<%=s.getSid()%>").css("width","50px");
 						var $bNameTd = $("<td>").text("<%=s.getbName()%>").css("width","150px");
 						
@@ -233,18 +266,22 @@
 						var $spanButton = $("<button>");
 						/* bStatus가 Y인지 N인지 판별 */
 						<%if(s.getbStatus().equals("Y")) {%>
-							$bStatusSpan.attr({"class":"toggleBG", "background: #0099ff"});
-							$spanButton.attr({"class":"toggleFG", "id":"toggle"+<%=s.getSid() %>, "left":"40px"});
+							$bStatusSpan.addClass("toggleBG")
+							$bStatusSpan.css({"background": "#0099ff"});
+							$spanButton.attr({"class":"toggleFG", "id":"toggle<%=s.getSid() %>"});
+							$spanButton.css('left', "40px");
 						<% } else {%>
-							$bStatusSpan.attr({"class":"toggleBG", "background: #0099ff"});
-							$spanButton.attr({"class":"toggleFG", "id":"toggle"+<%=s.getSid() %>, "left":"0px"});
+							$bStatusSpan.addClass("toggleBG");
+							$bStatusSpan.css({"background": "#CCCCCC"});
+							$spanButton.attr({"class":"toggleFG", "id":"toggle<%=s.getSid() %>"});
+							$spanButton.css('left', "0px");
 						<% } %>
-						var $updateTd = $("<td>");
+						var $updateTd = $("<td>").addClass("updateTds");
 						var $updateButton = $("<input>").attr({"type":"button", "value":"권한 적용", "id":"insertAuthor"+<%=s.getSid()%>});
 						
 						$bStatusSpan.append($spanButton);
 						$bStatusTd.append($bStatusSpan);
-						$$updateTd.append($updateButton);
+						$updateTd.append($updateButton);
 						
 						$tr.append($hiddenInput);
 						$tr.append($sidTd);
@@ -252,20 +289,28 @@
 						$tr.append($bStatusTd);
 						$tr.append($updateTd);
 						$sellerTable.append($tr);
-					
+						
 					<%} %>
 				}else{
 					$.ajax({
 						url : "/Semi_LF/searchSe.ad",
 						type : "post",
-						data : {
-							sellerbName : sellerbName
-						},
+						data : {sellerbName : sellerId},
 						success : function(data) {
-							$customerTable = $("#seTable");
-							$customerTable.html(""); // 초기화
+							$sellerTable = $("#seTable");
+							$sellerTable.html(""); // 초기화
 							
-						
+							var $headerTr = $("<tr>");
+							var $headerSid = $("<th>").text("번호").css("width", "70px");
+							var $headerbName = $("<th>").text("업체명").css("width", "150px");
+							var $headerbStatus = $("<th>").text(" N / Y ").css("width", "120px");
+							var $headerButton = $("<th>").text("권한 변경").css("width", "100px");
+							
+							$headerTr.append($headerSid);
+							$headerTr.append($headerbName);
+							$headerTr.append($headerbStatus);
+							$headerTr.append($headerButton);
+							$sellerTable.append($headerTr);
 							
 							for ( var key in data) {
 								var $tr = $("<tr>");
@@ -277,19 +322,23 @@
 								var $bStatusSpan = $("<span>");
 								var $spanButton = $("<button>");
 								/* bStatus가 Y인지 N인지 판별 */
-								if(data[key].bStatus.equals("Y")) {
-									$bStatusSpan.attr({"class":"toggleBG", "background: #0099ff"});
-									$spanButton.attr({"class":"toggleFG", "id":"toggle"+data[key].sid, "left":"40px"});
+								if(data[key].bStatus == "Y") {
+									$bStatusSpan.addClass("toggleBG");
+									$bStatusSpan.css("background", "#0099ff");
+									$spanButton.attr({"class":"toggleFG", "id":"toggle"+data[key].sid});
+									$spanButton.css("left","40px");
 								} else {
-									$bStatusSpan.attr({"class":"toggleBG", "background: #0099ff"});
-									$spanButton.attr({"class":"toggleFG", "id":"toggle"+data[key].sid, "left":"0px"});
+									$bStatusSpan.addClass("toggleBG");
+									$bStatusSpan.css("background", "#CCCCCC");
+									$spanButton.attr({"class":"toggleFG", "id":"toggle"+data[key].sid});
+									$spanButton.css("left","0px");
 								}
-								var $updateTd = $("<td>");
+								var $updateTd = $("<td>").addClass("updateTds");
 								var $updateButton = $("<input>").attr({"type":"button", "value":"권한 적용", "id":"insertAuthor"+data[key].sid});
 								
 								$bStatusSpan.append($spanButton);
 								$bStatusTd.append($bStatusSpan);
-								$$updateTd.append($updateButton);
+								$updateTd.append($updateButton);
 								
 								$tr.append($hiddenInput);
 								$tr.append($sidTd);
@@ -297,26 +346,17 @@
 								$tr.append($bStatusTd);
 								$tr.append($updateTd);
 								$sellerTable.append($tr);
+								
 								}
-							
 							}
 						});
 					}
-
+					// 초기화
+					$("#sellerbName").val("");
 				});
 			
-			
-			$("#insertAuthor").click(function(){
-				var sAuthor = parseInt($("#example").css("left"));
-				if(sAuthor >0){
-					alert("Y");
-				}else{
-					alert("N");
-				}
-			})
-			
 			// 토글버튼 클릭시 on, off 변경
-			$(".toggleBG").click(function() {
+			$(document).on('click', ".toggleBG", function(){
 				var toggleBG = $(this);
 				var toggleFG = $(this).find('.toggleFG');
 				var left = toggleFG.css('left');

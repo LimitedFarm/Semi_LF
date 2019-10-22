@@ -69,7 +69,7 @@ public class SellerInfo extends HttpServlet {
 				// 일반 회원의 정보를 가져온다.
 				ArrayList<Seller> seInfo = aService.selectSeller(currentPage, limit);
 				RequestDispatcher views = null;
-				if(seInfo.size() >0) {
+				if(listCount >0) {
 					views = request.getRequestDispatcher("views/admin/sellerManagement.jsp");
 					request.setAttribute("seInfo", seInfo);
 					request.setAttribute("pi", page);

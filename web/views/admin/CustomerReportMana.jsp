@@ -34,7 +34,7 @@
 			<input type="button" id="searchRe" value="찾기">
 			</form>
 		</div>
-		<div style="text-align:center; width:1000px;">
+		<div id="pagingScroll" style="text-align:center; width:1000px;">
 			<% for(CReportList cr : crList) {%>
 				<form class="borderOut form-inline" id="reportList<%=cr.getcRid() %>" style="align:center; margin:10px; ">
 					<input type="hidden" value="판매자 번호">
@@ -48,18 +48,32 @@
 						</tr>
 						<tr>
 							<td>상품명</td>
-							<td colspan=2><input class="form-control" type="text" value="" readonly></td>
+							<td colspan=2><input class="form-control" type="text" value="<%=cr.getpName() %>" readonly></td>
 							<td>신고 날짜</td>
-							<td><input class="form-control" type="text" value="날짜" readonly></td>
+							<td><input class="form-control" type="text" value="<%=cr.getReport_Date() %>" readonly></td>
 						</tr>
 						<tr>
 							<td>신고 내용</td>
-							<td colspan=4><textarea rows="5" cols="100" readonly></textarea></td>
+							<td colspan=4><textarea rows="5" cols="100" readonly><%=cr.getNoContent() %></textarea></td>
 						</tr>
 					</table>
 				</form>
 			<%} %>
 		</div>
 	</div>
+	<script>
+		
+		$(document).ready(function() {
+			//스크롤 발생 이벤트 처리
+			$('#pagingScroll').scroll(function() {
+				var scrollT = $(this).scrollTop(); //스크롤바의 상단위치
+				var scrollH = $(this).height(); //스크롤바를 갖는 div의 높이
+				var contentH = $('#divContent').height(); //문서 전체 내용을 갖는 div의 높이
+				if (scrollT + scrollH + 1 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
+					var addDiv = $('#pagingScroll').chlidren().html();
+				}
+			});
+		});
+	</script>
 </body>
 </html>

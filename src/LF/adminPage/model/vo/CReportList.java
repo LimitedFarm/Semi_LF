@@ -22,7 +22,8 @@ public class CReportList implements Serializable{
 	public CReportList() {}
 
 
-	public CReportList(int cRid, int cId, String noContent, Date report_Date, String status, int sale_Id, String userId) {
+	public CReportList(int cRid, int cId, String noContent, Date report_Date, String status, int sale_Id, String userId,
+			String pName) {
 		this.cRid = cRid;
 		this.cId = cId;
 		this.noContent = noContent;
@@ -30,6 +31,7 @@ public class CReportList implements Serializable{
 		this.status = status;
 		this.sale_Id = sale_Id;
 		this.userId = userId;
+		this.pName = pName;
 	}
 
 
@@ -103,6 +105,16 @@ public class CReportList implements Serializable{
 	}
 
 
+	public String getpName() {
+		return pName;
+	}
+
+
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -111,9 +123,9 @@ public class CReportList implements Serializable{
 	@Override
 	public String toString() {
 		return "CReportList [cRid=" + cRid + ", cId=" + cId + ", noContent=" + noContent + ", report_Date="
-				+ report_Date + ", status=" + status + ", sale_Id=" + sale_Id + ", userId=" + userId + "]";
+				+ report_Date + ", status=" + status + ", sale_Id=" + sale_Id + ", userId=" + userId + ", pName="
+				+ pName + "]";
 	}
-
 	
 	
 	

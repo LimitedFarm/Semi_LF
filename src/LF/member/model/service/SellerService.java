@@ -53,4 +53,19 @@ public class SellerService {
 		return result;
 	}
 
+	public int updateSeller(Seller seller) {
+		Connection conn = getConnection();
+		
+		int result = new SellerDao().updateSeller(conn, seller);
+		
+		if(result > 0)
+			commit(conn);
+		else
+			rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
 }

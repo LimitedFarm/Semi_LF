@@ -138,5 +138,33 @@ public class SellerDao {
 		System.out.println("regiSeller2");
 		return result;
 	}
+
+
+
+
+	public int updateSeller(Connection conn, Seller seller) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateSeller");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, seller.getBankName() );
+			pstmt.setString(2, seller.getAcNum());
+			pstmt.setString(3, seller.getAcName());
+			pstmt.setInt(4, seller.getSid());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	
 }

@@ -190,7 +190,6 @@ table th {
 				
 			// 찾기 기능
 			$("#searchCustomer").click(function(){
-				alert($("#exam").children().html());
 				var searchId = $("#customerId").val();
 				if(searchId == ""){
 					$customerTable = $("#cuTable");
@@ -249,7 +248,7 @@ table th {
 								
 								}
 							});
-
+					
 						}
 
 					});

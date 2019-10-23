@@ -3,6 +3,12 @@
 <%
 	ArrayList<CReportList> crList = (ArrayList)request.getAttribute("crList");
 	PageInfo pi = (PageInfo)request.getAttribute("pi");
+
+	int listCount = pi.getListCount();
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
 %>
 <!DOCTYPE html>
 <html>
@@ -37,7 +43,7 @@
 		<div id="pagingScroll" style="text-align:center; width:1000px;">
 			<% for(CReportList cr : crList) {%>
 				<form class="borderOut form-inline" id="reportList<%=cr.getcRid() %>" style="align:center; margin:10px; ">
-					<input type="hidden" value="판매자 번호">
+					<input type="hidden" value="<%=cr.getSale_Id()%>"> <!-- 구매 번호 -->
 					<table class="table table-borderless"style="width: 1000px; min-width:1000px;">
 						<tr>
 							<td>신고 번호</td>
@@ -60,20 +66,36 @@
 				</form>
 			<%} %>
 		</div>
+		<div>
+					<button onclick="location.href='<%=request.getContextPath() %>/selInfo.ad?currentPage=1'"> << </button>
+			
+					<!-- 이전 페이지로(<) -->
+					<%if(currentPage <= 1) {%>
+						<button disabled> < </button>
+					<%} else{ %>
+						<button onclick="location.href='<%=request.getContextPath() %>/seInfo.ad?currentPage=<%=currentPage-1 %>'"> < </button>
+					<%} %>
+			
+					<!-- 10개의 페이지 목록 -->
+					<%for(int p = startPage; p<=endPage; p++){ %>
+						<% if(p == currentPage){ %>
+					<button disabled><%=p %></button>
+						<%} else{%>
+					<button onclick="location.href='<%=request.getContextPath() %>/seInfo.ad?currentPage=<%=p %>'"><%=p %></button>
+						<%} %>
+					<%} %>
+			
+					<!-- 다음 페이지로(>) -->
+					<%if(currentPage >= maxPage){ %>
+						<button disabled> > </button>
+					<%}else{ %>
+						<button onclick="location.href='<%=request.getContextPath() %>/seInfo.ad?currentPage=<%=currentPage+1 %>'"> > </button>
+					<%} %>
+			
+					<!-- 맨 끝으로(>>) -->
+					<button onclick="location.href='<%=request.getContextPath() %>/seInfo.ad?currentPage=<%=maxPage %>'"> >> </button>
+				</div>
 	</div>
-	<script>
-		
-		$(document).ready(function() {
-			//스크롤 발생 이벤트 처리
-			$('#pagingScroll').scroll(function() {
-				var scrollT = $(this).scrollTop(); //스크롤바의 상단위치
-				var scrollH = $(this).height(); //스크롤바를 갖는 div의 높이
-				var contentH = $('#divContent').height(); //문서 전체 내용을 갖는 div의 높이
-				if (scrollT + scrollH + 1 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
-					var addDiv = $('#pagingScroll').chlidren().html();
-				}
-			});
-		});
-	</script>
+	
 </body>
 </html>

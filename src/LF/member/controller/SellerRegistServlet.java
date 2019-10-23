@@ -128,7 +128,7 @@ public class SellerRegistServlet extends HttpServlet {
 			//menubar의 상단에서 현재 세션 유저의 로그인 상태 확인하는 그거 부분임
 			
 			// 3_2. DB에 보낼 seller 객체와 Attachment 리스트 생성
-			Seller seller = new Seller(bName, bNum, cpNum, bankName, acNum, acName, cId);
+			Seller seller = new Seller(bName, bNum, cpNum, acNum, acName, bankName, cId);
 			
 			ArrayList<pAttachment> fileList = new ArrayList<pAttachment>();
 			// 전송 순서 역순으로 파일이 list에 저장되어 있기 때문에 반복문을 역으로 수행함

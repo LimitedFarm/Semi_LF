@@ -39,14 +39,14 @@ public class SellerInfoUpdate extends HttpServlet {
 		String acName = request.getParameter("acNa");
 		int sid = Integer.valueOf(request.getParameter("sid"));
 		
-		int result = new SellerService().updateSeller(new Seller(sid, bankName, acNum, acName));
+		int result = new SellerService().updateSeller(new Seller(sid, acNum, acName, bankName));
 		
 		//받은 결과에 따른 성공/실패 페이지 출력
 		String page="";
 		if(result > 0) {
 			
 			
-			
+			//팝업창 종료 및 부모창 새로고침
 			page = "views/seller/close.jsp";
 			request.setAttribute("msg", "판매자 정보 수정 완료");
 			

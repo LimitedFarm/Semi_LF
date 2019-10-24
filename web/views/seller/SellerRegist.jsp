@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="LF.member.model.vo.*"%>
-<%
-//로그인 되어있는 계정 정보 받아오기
-	/* Customer customer = (Customer)request.getAttribute("customer"); */
-%>
 
 <!DOCTYPE html>
 <html>
@@ -27,11 +23,17 @@
     width: 800px;
     height: 500px;
     display: inline-block;
-    text-align: center;
+    /* text-align: center; */
 	}
 	h1{
 	text-align:left;
-
+	}
+	#MyPageMenu{
+		margin-top : 130px;
+		width: 200px; 
+		height: 500px;	
+		display:inline-block;
+		text-align:center;
 	}
 </style>
 </head>
@@ -42,8 +44,14 @@
 	 
    --%>
    
-   <%@ include file="../seller/sellerMenubar.jsp" %>
-  
+   <%@ include file="../seller/menubar.jsp" %>
+	  <div id="MyPageMenu">
+			<a href="<%=request.getContextPath() %>/sellerInfoMng.selr?"><span>판매자 정보 관리</span></a><br>
+			<a href="<%=request.getContextPath() %>/selInfo.ad"><span>판매 상품 관리</span></a><br>
+			<a href="<%=request.getContextPath() %>/cReportInfo.ad"><span>상품 리뷰 확인</span></a><br>
+			<a href="<%=request.getContextPath() %>/sReportInfo.ad"><span>주문 관리</span></a><br>
+			<a href="<%=request.getContextPath() %>/selList.ad"><span>매출 관리</span></a><br>
+	</div>
 	
 	<div class="outer">
 	<h1 id="subject">판매자 회원 신청</h1>
@@ -51,6 +59,8 @@
 		
  		<form id="joinForm" action="<%=request.getContextPath() %>/sellerRegist.selr" method="post"  encType="multipart/form-data">	 
 			<table>
+			<input type="hidden" id="cid" name="cid" value="<%=loginUser.getCid() %>">
+			<%System.out.println(loginUser.getCid()); %>
 				<tr>
 					<td width="200px">사업자 이름  </td>
 					<td><input type="text" maxlength="13" name="bName" required></td>
@@ -62,7 +72,7 @@
 				</tr>
 				<tr>
 					<td width="200px">법인 번호</td>
-					<td><input type="text" maxlength="13" name="cpNum" required><br><div>test</div></td>
+					<td><input type="text" maxlength="13" name="cpNum" required><br><div></div></td>
 				</tr>
 				<tr>
 					<td width="200px">입금계좌 은행명</td>

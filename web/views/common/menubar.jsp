@@ -141,8 +141,8 @@
 	
 	<!-- 슬라이드 형식으로 버튼 클릭시 도출되는 메뉴바 -->
 	<div id="menu">
-		<a href="views/Main/MainPage.jsp" class="linkC"><span class="linkSpan"><i class="material-icons md-25">home</i></span>&nbsp;&nbsp;Home</a>
-		<a href="#" class="linkC aline"><span class="linkSpan"><i class="material-icons md-25">account_circle</i></span>&nbsp;&nbsp;My Page</a>
+		<a href="/Semi_LF/views/Main/MainPage.jsp" class="linkC"><span class="linkSpan"><i class="material-icons md-25">home</i></span>&nbsp;&nbsp;Home</a>
+		<a href="/Semi_LF/views/customer/MyPage.jsp" class="linkC aline"><span class="linkSpan"><i class="material-icons md-25">account_circle</i></span>&nbsp;&nbsp;My Page</a>
 		<a href="#" class="linkC"><span class="linkSpan"><i class="material-icons md-25">add_shopping_cart</i></span>&nbsp;&nbsp;상품 게시판</a>
 		<a href="#" class="linkC aline"><span class="linkSpan"><i class="material-icons md-25">shopping_basket</i></span>&nbsp;&nbsp;장바구니</a>
 		<a href="#" class="linkC"><span class="linkSpan"><i class="material-icons md-25">shopping_cart</i></span>&nbsp;&nbsp;HOME</a>

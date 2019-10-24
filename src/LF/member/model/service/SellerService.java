@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import LF.product.model.vo.pAttachment;
+import LF.member.model.dao.MenubarDao;
 import LF.member.model.dao.SellerDao;
 import LF.member.model.vo.Seller;
 import static LF.common.JDBCTemplate.*;
@@ -13,44 +14,28 @@ public class SellerService {
 	public int registSeller(Seller seller, ArrayList<pAttachment> fileList) {
 		
 		Connection conn = getConnection();
-		
 		SellerDao sDao = new SellerDao();
-		System.out.println("service1");
-		int result1 = sDao.registImage(conn, fileList);
+		int result1 = sDao.registSeller(conn, seller);
 		
 		if(result1>0) {
 			commit(conn);
 		}else {
 			rollback(conn);
 		}
-		System.out.println("service2");
-		ArrayList<pAttachment> list = sDao.getFid(conn, fileList);
 		
 		close(conn);
 		
-		
 		Connection conn2 = getConnection();
-		
-		System.out.println("service3");
-		int result2 = sDao.registSeller(conn2, seller);
-		
-		
-		System.out.println("service4");
-		
-		int result = 0;
-		
+		int result2 = sDao.registImage(conn2, fileList, seller);
+
 		if(result2>0) {
 			commit(conn2);
-			result =1;
 		}else {
 			rollback(conn2);
 		}
-		
-		System.out.println("service5");
 		close(conn2);
-		System.out.println("service6");
-
-		return result;
+		
+		return result2;
 	}
 
 	public int updateSeller(Seller seller) {
@@ -66,6 +51,17 @@ public class SellerService {
 		close(conn);
 		
 		return result;
+	}
+
+
+	public Seller selectSeller(int sid) {
+		Connection conn = getConnection();
+		
+		Seller seInfo = new SellerDao().selectSeller(conn, sid);
+		
+		close(conn);
+		
+		return seInfo;
 	}
 
 }

@@ -39,12 +39,13 @@
 	<%@ include file="../common/menubar.jsp" %>
 	
 	<div id="sellerMenu">
-	<%-- <%if(seller == null) {%> --%>
+	<%if(seller == null) {%> 
 	  <script>
 	  var regist = confirm("아직 판매자로 등록하지 않았습니다. 판매자 등록을 하시겠습니까?");
 	  if( regist == true ){
 	      alert("확인선택!");
-	      $("#sr").get(0).click();
+	     /*  $("#sr").get(0).click(); */
+	      window.location.replace("<%=request.getContextPath() %>/sellerRegist.selr?");
 	   }else{
 		   //취소 선택
 	      alert("메인 페이지로 이동합니다.");
@@ -52,16 +53,16 @@
 		  
 	   }
 	  </script>
-	<%-- <%}else { %> --%>
+	<%}else { %>
 		<a href="../Main/MainPage.jsp"><span>LFmall HomePage</span></a><br>
-		<a if="sr" href="<%=request.getContextPath() %>/sellerRegist.selr?"> <span>판매자 등록하기</span></a><br>	<!-- sRegistServlet -->
+		<%-- <a if="sr" href="<%=request.getContextPath() %>/sellerRegist.selr?"> <span>판매자 등록하기</span></a><br>	<!-- sRegistServlet --> --%>
 		<a href="<%=request.getContextPath() %>/sellerInfoMng.selr?"><span>판매자 정보 관리</span></a><br>
 		<a href="<%=request.getContextPath() %>/selInfo.ad"><span>판매 상품 관리</span></a><br>
 		<a href="<%=request.getContextPath() %>/cReportInfo.ad"><span>상품 리뷰 확인</span></a><br>
 		<a href="<%=request.getContextPath() %>/sReportInfo.ad"><span>주문 관리</span></a><br>
 		<a href="<%=request.getContextPath() %>/selList.ad"><span>매출 관리</span></a><br>
 	
-	<%-- <%} %> --%>
+	<%} %>
 		
 	</div>
 </body>

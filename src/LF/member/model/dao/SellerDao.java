@@ -34,7 +34,7 @@ public class SellerDao {
 	
 	
 
-	public int registImage(Connection conn, ArrayList<pAttachment> fileList) {
+	public int registImage(Connection conn, ArrayList<pAttachment> fileList, Seller seller) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -45,7 +45,7 @@ public class SellerDao {
 				pAttachment at = fileList.get(i);
 				pstmt=conn.prepareStatement(query);
 				pstmt.setString(1, at.getFileName());
-				pstmt.setString(2, at.getChangeName());
+				pstmt.setString(2, at.getChangeName()+seller.getSid());
 				pstmt.setString(3, at.getFilePath());
 				
 				result += pstmt.executeUpdate();
@@ -69,35 +69,7 @@ public class SellerDao {
 
 
 
-	public ArrayList<pAttachment> getFid(Connection conn, ArrayList<pAttachment> fileList) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		System.out.println("getfid1");
-		String query = prop.getProperty("getfId");
-		try {
-			for(int i=0; i<fileList.size();i++) {
-				pAttachment at = fileList.get(i);
-				
-				System.out.println(at.getChangeName());
-				pstmt=conn.prepareStatement(query);
-				pstmt.setString(1, at.getChangeName());
-				
-				rs=pstmt.executeQuery();
-			}
-			while(rs.next()) {
-				fileList.get(0).setfId(rs.getInt("fid"));
-			}
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			close(pstmt);
-			close(rs);
-		}
-		System.out.println("getfid2");
-		return fileList;
-	}
+	
 	
 	public int registSeller(Connection conn, Seller seller) {
 		PreparedStatement pstmt = null;
@@ -114,7 +86,6 @@ public class SellerDao {
 			pstmt.setString(5, seller.getAcName());
 			pstmt.setString(6, seller.getBankName());
 			pstmt.setInt(7, seller.getCid());
-			pstmt.setInt(8,35);
 			
 			System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
 			System.out.println(seller.getbName());
@@ -124,7 +95,6 @@ public class SellerDao {
 			System.out.println(seller.getAcName());
 			System.out.println(seller.getBankName());
 			System.out.println(seller.getCid());
-			System.out.println(35);
 			System.out.println("beforeResult");
 			
 			result += pstmt.executeUpdate();
@@ -166,5 +136,49 @@ public class SellerDao {
 		
 		return result;
 	}
-	
+
+
+
+
+	public Seller selectSeller(Connection conn, int sid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Seller seInfo = new Seller();
+		String query = prop.getProperty("selectSeller");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			System.out.println(sid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				System.out.println("if문");
+				seInfo = new Seller(rs.getInt("sid"),
+									rs.getString("bStatus"),
+									rs.getString("bName"),
+									rs.getString("bNum"),
+									rs.getString("cpNum"),
+									rs.getString("acNum"),
+									rs.getString("acName"),
+									rs.getString("bankName"),
+									rs.getDate("sJoinDate"),
+									rs.getDate("sModifyDate"),
+									rs.getInt("cid"),
+									rs.getInt("fid"));
+				System.out.println("seller : " + seInfo);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return seInfo;
+
+	}
+
 }

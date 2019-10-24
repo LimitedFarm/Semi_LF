@@ -23,7 +23,7 @@ import LF.product.model.vo.pAttachment;
 /**
  * Servlet implementation class SellerRegistServlet
  */
-@WebServlet("/selregist.selr")
+@WebServlet("/sellerRegist.selr")
 public class SellerRegistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -119,7 +119,7 @@ public class SellerRegistServlet extends HttpServlet {
 			String bankName = multiRequest.getParameter("bankName");
 			String acNum = multiRequest.getParameter("acNum");
 			String acName = multiRequest.getParameter("acName");
-			int cId = 10;
+			int cId = Integer.valueOf(multiRequest.getParameter("cid"));
 			
 			/*
 			 * int cId = ((Seller)request.getSession().getAttribute("loginUser")).getCid();

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="LF.member.model.vo.*, java.sql.*"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +7,17 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <title>Insert title here</title>
+<!-- <style>
+	.outer{
+	position:absolute;
+	z-index:1600;
+	}
+</style> -->
 </head>
 <body>
 
+
+<div class="outer">
 	<h1>사업자 정보 변경</h1>
 	<form id="updateForm" action="<%=request.getContextPath() %>/sellerUpdate.selr" method="post">
 		<table border:1px gray solid>
@@ -55,6 +62,7 @@
 			<button id="change" onclick="account();">변경하기</button>	
 			<!-- SellerInfoUpdate -->
 		</div>
+	</div>
 
 		<script>
 		

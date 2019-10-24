@@ -1,6 +1,7 @@
 package LF.member.model.dao;
 
 import java.io.FileNotFoundException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -42,8 +43,9 @@ public class MenubarDao {
 			pstmt.setString(2, userPwd);
 			
 			rs = pstmt.executeQuery();
-			System.out.println(userId +" "+ userPwd);
-			if(rs.next()) {
+			System.out.println("seller : " + userId +" "+ userPwd);
+			while(rs.next()) {
+				System.out.println("if문 안 쪽 : " + rs.getInt("cid"));
 				cuInfo = new Customer(rs.getInt("cid"),
 									rs.getString("userid"),
 									rs.getString("userPwd"),
@@ -79,10 +81,12 @@ public class MenubarDao {
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, cid);
+			System.out.println(cid);
 			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
+				System.out.println("if문");
 				seInfo = new Seller(rs.getInt("sid"),
 									rs.getString("bStatus"),
 									rs.getString("bName"),
@@ -95,6 +99,7 @@ public class MenubarDao {
 									rs.getDate("sModifyDate"),
 									rs.getInt("cid"),
 									rs.getInt("fid"));
+				System.out.println("seller : " + seInfo);
 			}
 			
 		} catch (SQLException e) {

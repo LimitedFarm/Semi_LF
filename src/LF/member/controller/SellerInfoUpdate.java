@@ -1,7 +1,6 @@
 package LF.member.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import LF.member.model.service.SellerService;
 import LF.member.model.vo.Seller;
@@ -44,13 +44,9 @@ public class SellerInfoUpdate extends HttpServlet {
 		//받은 결과에 따른 성공/실패 페이지 출력
 		String page="";
 		if(result > 0) {
-			
-			
 			//팝업창 종료 및 부모창 새로고침
 			page = "views/seller/close.jsp";
 			request.setAttribute("msg", "판매자 정보 수정 완료");
-			
-			
 			
 		}else {
 			page = "views/seller/errorPage.jsp";

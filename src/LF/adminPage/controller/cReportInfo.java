@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import LF.adminPage.model.service.AdminService;
 import LF.adminPage.model.vo.CReportList;
 import LF.adminPage.model.vo.PageInfo;
@@ -70,11 +72,14 @@ public class cReportInfo extends HttpServlet {
 		
 		ArrayList<CReportList> crList = as.selectcReport(currentPage, limit);
 		
-		if(listCount > 0) {
+		if(listCount > 0 || currentPage == 1) {
 			RequestDispatcher views = request.getRequestDispatcher("views/admin/CustomerReportMana.jsp");
 			request.setAttribute("crList", crList);
 			request.setAttribute("pi", page);
 			views.forward(request, response);
+		}else if(currentPage > 1){
+			response.setContentType("application/json;");
+			new Gson().toJson(crList,response.getWriter());
 		}else {
 			System.out.println("실패");
 		}

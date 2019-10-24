@@ -3,24 +3,21 @@ DROP TABLE Admin CASCADE CONSTRAINTS;
 DROP TABLE seller CASCADE CONSTRAINTS;
 DROP TABLE PList CASCADE CONSTRAINTS;
 DROP TABLE FAQ CASCADE CONSTRAINTS;
-DROP TABLE Notice CASCADE CONSTRAINTS;
 DROP TABLE Answer CASCADE CONSTRAINTS;
 DROP TABLE Question CASCADE CONSTRAINTS;
 DROP TABLE CReportList CASCADE CONSTRAINTS;
 DROP TABLE SReportList CASCADE CONSTRAINTS;
-DROP TABLE dAddress CASCADE CONSTRAINTS;
-DROP TABLE SList CASCADE CONSTRAINTS;
+DROP TABLE orderList CASCADE CONSTRAINTS;
 DROP TABLE Category CASCADE CONSTRAINTS;
 DROP TABLE pAttachment CASCADE CONSTRAINTS;
 DROP TABLE Review CASCADE CONSTRAINTS;
-DROP TABLE pInfo CASCADE CONSTRAINTS;
-DROP TABLE payment CASCADE CONSTRAINTS;
+DROP TABLE BASKET CASCADE CONSTRAINTS;
+
 
 DROP SEQUENCE CID_SEQ;
 DROP SEQUENCE AID_SEQ;
 DROP SEQUENCE ANID_SEQ;
 DROP SEQUENCE QID_SEQ;
-DROP SEQUENCE NID_SEQ;
 DROP SEQUENCE FAQ_SEQ;
 DROP SEQUENCE SRID_SEQ;
 DROP SEQUENCE REID_SEQ;
@@ -29,16 +26,13 @@ DROP SEQUENCE PID_SEQ;
 DROP SEQUENCE SID_SEQ;
 DROP SEQUENCE CATEID_SEQ;
 DROP SEQUENCE FID_SEQ;
-DROP SEQUENCE INFO_SEQ;
 DROP SEQUENCE CRID_SEQ;
-DROP SEQUENCE DAID_SEQ;
-DROP SEQUENCE PAY_SEQ;
+DROP SEQUENCE BASKET_SEQ;
 
 CREATE SEQUENCE CID_SEQ;
 CREATE SEQUENCE AID_SEQ;
 CREATE SEQUENCE ANID_SEQ;
 CREATE SEQUENCE QID_SEQ;
-CREATE SEQUENCE NID_SEQ;
 CREATE SEQUENCE FAQ_SEQ;
 CREATE SEQUENCE SRID_SEQ;
 CREATE SEQUENCE REID_SEQ;
@@ -47,11 +41,8 @@ CREATE SEQUENCE PID_SEQ;
 CREATE SEQUENCE SID_SEQ;
 CREATE SEQUENCE CATEID_SEQ;
 CREATE SEQUENCE FID_SEQ;
-CREATE SEQUENCE INFO_SEQ;
 CREATE SEQUENCE CRID_SEQ;
-CREATE SEQUENCE DAID_SEQ;
-CREATE SEQUENCE PAY_SEQ;
-
+CREATE SEQUENCE BASKET_SEQ;
 
 CREATE TABLE FAQ (
 	FAQId	NUMBER		NOT NULL,
@@ -108,9 +99,9 @@ CREATE TABLE seller (
 	sId	NUMBER		NOT NULL,
 	bStatus	CHAR(1) CHECK(bStatus in ('Y', 'N')),
 	bName	NVARCHAR2(50)		NOT NULL,
-	bNum	NVARCHAR2(20)		NOT NULL,
-	cpNum	NVARCHAR2(20)		NOT NULL,
-	acNum	NVARCHAR2(20)		NOT NULL,
+	bNum	NVARCHAR2(20)		NULL,
+	cpNum	NVARCHAR2(20)		NULL,
+	acNum	NVARCHAR2(20)		NULL,
 	acName	NVARCHAR2(10)		NOT NULL,
 	bankName	NVARCHAR2(30)		NOT NULL,
 	sJoinDate	DATE	DEFAULT SYSDATE	NOT NULL,
@@ -120,7 +111,7 @@ CREATE TABLE seller (
 );
 
 ALTER TABLE seller
-MODIFY bStatus DEFAULT 'N' NOT NULL;
+MODIFY bStatus DEFAULT 'Y' NOT NULL;
 
 COMMENT ON COLUMN seller.sId IS '판매자 회원번호';
 
@@ -145,32 +136,6 @@ COMMENT ON COLUMN seller.sModifyDate IS '정보 수정 날짜';
 COMMENT ON COLUMN seller.fId IS '파일 번호';
 
 COMMENT ON COLUMN seller.cId IS '시퀀스를 통한 회원번호';
-
-CREATE TABLE Notice (
-	nId	NUMBER		NOT NULL,
-	nTitle	NVARCHAR2(20)		NOT NULL,
-	nContent	NVARCHAR2(500)		NOT NULL,
-	nrgDate	DATE	DEFAULT SYSDATE	NOT NULL,
-	nmodiDate	DATE	DEFAULT SYSDATE	NOT NULL,
-	status	CHAR(1) CHECK(status in ('Y', 'N')),
-	aId	NUMBER		NOT NULL
-);
-ALTER TABLE Notice
-MODIFY status DEFAULT 'Y' NOT NULL;
-
-COMMENT ON COLUMN Notice.nId IS '공지사항 인덱스번호';
-
-COMMENT ON COLUMN Notice.nTitle IS '공지사항 제목';
-
-COMMENT ON COLUMN Notice.nContent IS '공지사항 내용';
-
-COMMENT ON COLUMN Notice.nrgDate IS '공지사항 작성일자';
-
-COMMENT ON COLUMN Notice.nmodiDate IS '공지사항 수정일자';
-
-COMMENT ON COLUMN Notice.status IS '공지사항 공개, 비공개 여부';
-
-COMMENT ON COLUMN Notice.aId IS '관리자번호';
 
 CREATE TABLE CReportList (
 	crId	NUMBER		NOT NULL,
@@ -204,11 +169,15 @@ CREATE TABLE PList (
 	pCount	NUMBER		NOT NULL,
 	pAddress	NVARCHAR2(50)		NOT NULL,
 	pDay	DATE		NULL,
-	pPreiode	DATE		NULL,
+	pPeriod	DATE		NULL,
+    pText1 NVARCHAR2(100) NULL,
+    pText2 NVARCHAR2(100) NULL,
+    pText3 NVARCHAR2(100) NULL,
+    pText4 NVARCHAR2(100) NULL,
+    pText5 NVARCHAR2(100) NULL,
+	createDate	DATE	DEFAULT SYSDATE	NULL,
+	pModifyDate	DATE		NULL,
 	status	CHAR(1) CHECK(status in ('Y', 'N')),
-    createDate      DATE    DEFAULT SYSDATE NOT NULL,
-    pModifyDate     DATE    DEFAULT SYSDATE NOT NULL,
-	fId	NUMBER		NOT NULL,
 	cateId	NUMBER		NOT NULL
 );
 
@@ -227,17 +196,25 @@ COMMENT ON COLUMN PList.pCount IS '상품 재고량';
 
 COMMENT ON COLUMN PList.pAddress IS '상품 원산지';
 
+COMMENT ON COLUMN PList.pText1 IS '상품설명1';
+
+COMMENT ON COLUMN PList.pText2 IS '상품설명2';
+
+COMMENT ON COLUMN PList.pText3 IS '상품설명3';
+
+COMMENT ON COLUMN PList.pText4 IS '상품설명4';
+
+COMMENT ON COLUMN PList.pText5 IS '상품설명5';
+
 COMMENT ON COLUMN PList.pDay IS '상품 생산일자';
 
-COMMENT ON COLUMN PList.pPreiode IS '상품 유통기한';
+COMMENT ON COLUMN PList.pPeriod IS '상품 유통기한';
 
 COMMENT ON COLUMN PList.createDate IS '물품 등록일';
 
 COMMENT ON COLUMN PList.pModifyDate IS '수정날짜';
 
 COMMENT ON COLUMN PList.status IS '상품 판매 유무';
-
-COMMENT ON COLUMN PList.fId IS '파일 번호';
 
 COMMENT ON COLUMN PList.cateId IS '카테고리 번호';
 
@@ -268,38 +245,53 @@ COMMENT ON COLUMN Answer.qId IS '문의번호';
 
 COMMENT ON COLUMN Answer.cId IS '시퀀스를 통한 회원번호';
 
-CREATE TABLE SList (
+CREATE TABLE orderList (
 	sale_Id	NUMBER		NOT NULL,
 	status	CHAR(1) CHECK(status in ('Y', 'N')),
+    pName	NVARCHAR2(20)		NOT NULL,
 	sale_date	DATE	DEFAULT SYSDATE	NOT NULL,
 	sCount	NUMBER		NOT NULL,
+	daName	NVARCHAR2(20)		NOT NULL,
+	orPhone	NVARCHAR2(20)		NULL,
+	daAddress	NVARCHAR2(50)		NOT NULL,
+	daMessage	NVARCHAR2(50)		NULL,
 	pId	NUMBER		NOT NULL,
 	sId	NUMBER		NOT NULL,
 	cId	NUMBER		NOT NULL
 );
 
-ALTER TABLE SList
+ALTER TABLE orderList
 MODIFY status DEFAULT 'Y' NOT NULL;
 
-COMMENT ON COLUMN SList.sale_Id IS '판매 번호';
+COMMENT ON COLUMN orderList.sale_Id IS '판매 번호';
 
-COMMENT ON COLUMN SList.status IS '판매 상태';
+COMMENT ON COLUMN orderList.status IS '판매 상태';
 
-COMMENT ON COLUMN SList.sale_date IS '판매 날짜';
+COMMENT ON COLUMN orderList.pName IS '상품명';
 
-COMMENT ON COLUMN SList.sCount IS '판매 물품 수량';
+COMMENT ON COLUMN orderList.sale_date IS '판매 날짜';
 
-COMMENT ON COLUMN SList.pId IS '상품 번호';
+COMMENT ON COLUMN orderList.sCount IS '판매 물품 수량';
 
-COMMENT ON COLUMN SList.sId IS '판매자 회원번호';
+COMMENT ON COLUMN orderList.daName IS '주문자 이름';
 
-COMMENT ON COLUMN SList.cId IS '시퀀스를 통한 회원번호';
+COMMENT ON COLUMN orderList.orPhone IS '배송지 연락처';
+
+COMMENT ON COLUMN orderList.daAddress IS '배송지 주소';
+
+COMMENT ON COLUMN orderList.daMessage IS '요청 사항';
+
+COMMENT ON COLUMN orderList.pId IS '상품 번호';
+
+COMMENT ON COLUMN orderList.sId IS '판매자 회원번호';
+
+COMMENT ON COLUMN orderList.cId IS '시퀀스를 통한 회원번호';
 
 CREATE TABLE Customer (
 	cId	NUMBER		NOT NULL,
 	userId	NVARCHAR2(12)		NOT NULL,
 	userPwd	NVARCHAR2(20)		NOT NULL,
-    userName	NVARCHAR2(20)		NOT NULL,
+	userName	NVARCHAR2(20)		NOT NULL,
 	address	NVARCHAR2(50)		NOT NULL,
 	phone	NVARCHAR2(11)		NOT NULL,
 	email	NVARCHAR2(50)		NOT NULL,
@@ -310,10 +302,10 @@ CREATE TABLE Customer (
 );
 
 ALTER TABLE Customer
-MODIFY status DEFAULT 'Y' NOT NULL;
+MODIFY groupNum DEFAULT '1' NOT NULL;
 
 ALTER TABLE Customer
-MODIFY groupNum DEFAULT '1' NOT NULL;
+MODIFY status DEFAULT 'Y' NOT NULL;
 
 COMMENT ON COLUMN Customer.cId IS '시퀀스를 통한 회원번호';
 
@@ -337,27 +329,6 @@ COMMENT ON COLUMN Customer.groupNum IS '관리자 3, 판매자 2, 일반 회원 
 
 COMMENT ON COLUMN Customer.status IS '회원 상태정보(탈퇴시 N)';
 
-CREATE TABLE dAddress (
-	daId	NUMBER		NOT NULL,
-	cId	NUMBER		NOT NULL,
-	daName	NVARCHAR2(50)		NOT NULL,
-	daAddress	NVARCHAR2(50)		NOT NULL,
-	status	CHAR(1) CHECK(status in ('Y', 'N'))
-);
-
-ALTER TABLE dAddress
-MODIFY status DEFAULT 'Y' NOT NULL;
-
-COMMENT ON COLUMN dAddress.daId IS '배송지 번호';
-
-COMMENT ON COLUMN dAddress.cId IS '시퀀스를 통한 회원번호';
-
-COMMENT ON COLUMN dAddress.daName IS '배송지명';
-
-COMMENT ON COLUMN dAddress.daAddress IS '배송지 주소';
-
-COMMENT ON COLUMN dAddress.status IS '배송지 목록 상태';
-
 CREATE TABLE Category (
 	cateId	NUMBER		NOT NULL,
 	category	NVARCHAR2(50)		NOT NULL
@@ -369,6 +340,7 @@ COMMENT ON COLUMN Category.category IS '카테고리 이름';
 
 CREATE TABLE pAttachment (
 	fId	NUMBER		NOT NULL,
+	pId	NUMBER		NULL,
 	file_name	NVARCHAR2(20)		NOT NULL,
 	change_name	NVARCHAR2(100)		NOT NULL,
 	file_path	NVARCHAR2(100)		NOT NULL,
@@ -439,8 +411,8 @@ CREATE TABLE Question (
 	qTitle	NVARCHAR2(50)		NOT NULL,
 	qContent	NVARCHAR2(500)		NULL,
 	question_date	DATE	DEFAULT SYSDATE	NOT NULL,
-    fId NUMBER NULL,
-	status	CHAR(1) CHECK(status in ('Y', 'N'))
+	status	CHAR(1) CHECK(status in ('Y', 'N')),
+	fId	NUMBER		NOT NULL
 );
 
 ALTER TABLE Question
@@ -458,53 +430,25 @@ COMMENT ON COLUMN Question.question_date IS '문의 날짜';
 
 COMMENT ON COLUMN Question.status IS '문의 상태';
 
-CREATE TABLE pInfo (
-	infoNum	NUMBER		NOT NULL,
-	pContent	NVARCHAR2(1500)		NULL,
-	fId	NUMBER		NULL,
-	pId	NUMBER		NOT NULL,
-	sId	NUMBER		NOT NULL
-);
+COMMENT ON COLUMN Question.fId IS '파일 번호';
 
-COMMENT ON COLUMN pInfo.infoNum IS '저장된 정보의 순서';
-
-COMMENT ON COLUMN pInfo.pContent IS '제품 상세 정보';
-
-COMMENT ON COLUMN pInfo.fId IS '파일 번호';
-
-COMMENT ON COLUMN pInfo.pId IS '상품 번호';
-
-COMMENT ON COLUMN pInfo.sId IS '판매자 회원번호';
-
-CREATE TABLE payment (
-	payId	NUMBER		NOT NULL,
+CREATE TABLE basket (
+	basketId	NUMBER		NOT NULL,
 	cId	NUMBER		NOT NULL,
-	bankName	NVARCHAR2(20)		NOT NULL,
-	payWay	NVARCHAR2(20)		NOT NULL,
-	money	NUMBER		NOT NULL,
-	status	CHAR(1)	,
 	pId	NUMBER		NOT NULL,
-	sId	NUMBER		NOT NULL
+    sid NUMBER      NOT NULL,
+	count	NUMBER		NOT NULL
 );
 
-ALTER TABLE payment
-MODIFY status DEFAULT 'Y' NOT NULL;
+COMMENT ON COLUMN basket.basketId IS '장바구니 번호';
 
-COMMENT ON COLUMN payment.payId IS '결제번호';
+COMMENT ON COLUMN basket.cId IS '시퀀스를 통한 회원번호';
 
-COMMENT ON COLUMN payment.cId IS '시퀀스를 통한 회원번호';
+COMMENT ON COLUMN basket.pId IS '상품 번호';
 
-COMMENT ON COLUMN payment.bankName IS '은행명';
+COMMENT ON COLUMN basket.sid IS '판매자 회원 번호';
 
-COMMENT ON COLUMN payment.payWay IS '결제방식';
-
-COMMENT ON COLUMN payment.money IS '결제금액';
-
-COMMENT ON COLUMN payment.status IS '결제내역의 환불유무';
-
-COMMENT ON COLUMN payment.pId IS '상품 번호';
-
-COMMENT ON COLUMN payment.sId IS '판매자 회원번호';
+COMMENT ON COLUMN basket.count IS '물품 수량';
 
 ALTER TABLE FAQ ADD CONSTRAINT PK_FAQ PRIMARY KEY (
 	FAQId
@@ -516,10 +460,6 @@ ALTER TABLE Review ADD CONSTRAINT PK_REVIEW PRIMARY KEY (
 
 ALTER TABLE seller ADD CONSTRAINT PK_SELLER PRIMARY KEY (
 	sId
-);
-
-ALTER TABLE Notice ADD CONSTRAINT PK_NOTICE PRIMARY KEY (
-	nId
 );
 
 ALTER TABLE CReportList ADD CONSTRAINT PK_CREPORTLIST PRIMARY KEY (
@@ -536,16 +476,11 @@ ALTER TABLE Answer ADD CONSTRAINT PK_ANSWER PRIMARY KEY (
 	anId
 );
 
-ALTER TABLE SList ADD CONSTRAINT PK_SLIST PRIMARY KEY (
+ALTER TABLE orderList ADD CONSTRAINT PK_ORDERLIST PRIMARY KEY (
 	sale_Id
 );
 
 ALTER TABLE Customer ADD CONSTRAINT PK_CUSTOMER PRIMARY KEY (
-	cId
-);
-
-ALTER TABLE dAddress ADD CONSTRAINT PK_DADDRESS PRIMARY KEY (
-	daId,
 	cId
 );
 
@@ -571,12 +506,8 @@ ALTER TABLE Question ADD CONSTRAINT PK_QUESTION PRIMARY KEY (
 	cId
 );
 
-ALTER TABLE pInfo ADD CONSTRAINT PK_PINFO PRIMARY KEY (
-	infoNum
-);
-
-ALTER TABLE payment ADD CONSTRAINT PK_payment PRIMARY KEY (
-	payId,
+ALTER TABLE basket ADD CONSTRAINT PK_BASKET PRIMARY KEY (
+	basketId,
 	cId
 );
 
@@ -587,13 +518,6 @@ REFERENCES Admin (
 	aId
 );
 
-ALTER TABLE Review ADD CONSTRAINT FK_SList_TO_Review_1 FOREIGN KEY (
-	sale_Id
-)
-REFERENCES SList (
-	sale_Id
-);
-
 ALTER TABLE Review ADD CONSTRAINT FK_Customer_TO_Review_1 FOREIGN KEY (
 	cId
 )
@@ -601,11 +525,11 @@ REFERENCES Customer (
 	cId
 );
 
-ALTER TABLE seller ADD CONSTRAINT FK_Customer_TO_seller_1 FOREIGN KEY (
-	cId
+ALTER TABLE Review ADD CONSTRAINT FK_orderList_TO_Review_1 FOREIGN KEY (
+	sale_Id
 )
-REFERENCES Customer (
-	cId
+REFERENCES orderList (
+	sale_Id
 );
 
 ALTER TABLE seller ADD CONSTRAINT FK_pAttachment_TO_seller_1 FOREIGN KEY (
@@ -615,11 +539,11 @@ REFERENCES pAttachment (
 	fId
 );
 
-ALTER TABLE Notice ADD CONSTRAINT FK_Admin_TO_Notice_1 FOREIGN KEY (
-	aId
+ALTER TABLE seller ADD CONSTRAINT FK_Customer_TO_seller_1 FOREIGN KEY (
+	cId
 )
-REFERENCES Admin (
-	aId
+REFERENCES Customer (
+	cId
 );
 
 ALTER TABLE CReportList ADD CONSTRAINT FK_Customer_TO_CReportList_1 FOREIGN KEY (
@@ -629,10 +553,10 @@ REFERENCES Customer (
 	cId
 );
 
-ALTER TABLE CReportList ADD CONSTRAINT FK_SList_TO_CReportList_1 FOREIGN KEY (
+ALTER TABLE CReportList ADD CONSTRAINT FK_orderList_TO_CReportList_1 FOREIGN KEY (
 	sale_Id
 )
-REFERENCES SList (
+REFERENCES orderList (
 	sale_Id
 );
 
@@ -641,13 +565,6 @@ ALTER TABLE PList ADD CONSTRAINT FK_seller_TO_PList_1 FOREIGN KEY (
 )
 REFERENCES seller (
 	sId
-);
-
-ALTER TABLE PList ADD CONSTRAINT FK_pAttachment_TO_PList_1 FOREIGN KEY (
-	fId
-)
-REFERENCES pAttachment (
-	fId
 );
 
 ALTER TABLE PList ADD CONSTRAINT FK_Category_TO_PList_1 FOREIGN KEY (
@@ -671,21 +588,14 @@ REFERENCES Question (
 	qId, cId
 );
 
-ALTER TABLE SList ADD CONSTRAINT FK_PList_TO_SList_1 FOREIGN KEY (
+ALTER TABLE orderList ADD CONSTRAINT FK_PList_TO_orderList_1 FOREIGN KEY (
 	pId, sId
 )
 REFERENCES PList (
 	pId, sId
 );
 
-ALTER TABLE SList ADD CONSTRAINT FK_Customer_TO_SList_1 FOREIGN KEY (
-	cId
-)
-REFERENCES Customer (
-	cId
-);
-
-ALTER TABLE dAddress ADD CONSTRAINT FK_Customer_TO_dAddress_1 FOREIGN KEY (
+ALTER TABLE orderList ADD CONSTRAINT FK_Customer_TO_orderList_1 FOREIGN KEY (
 	cId
 )
 REFERENCES Customer (
@@ -706,10 +616,10 @@ REFERENCES Review (
 	reId
 );
 
-ALTER TABLE SReportList ADD CONSTRAINT FK_SList_TO_SReportList_1 FOREIGN KEY (
+ALTER TABLE SReportList ADD CONSTRAINT FK_orderList_TO_SReportList_1 FOREIGN KEY (
 	sale_Id
 )
-REFERENCES SList (
+REFERENCES orderList (
 	sale_Id
 );
 
@@ -727,36 +637,23 @@ REFERENCES Customer (
 	cId
 );
 
-ALTER TABLE pInfo ADD CONSTRAINT FK_pAttachment_TO_pInfo_1 FOREIGN KEY (
+ALTER TABLE Question ADD CONSTRAINT FK_pAttachment_TO_Question_1 FOREIGN KEY (
 	fId
 )
 REFERENCES pAttachment (
 	fId
 );
 
-ALTER TABLE pInfo ADD CONSTRAINT FK_PList_TO_pInfo_1 FOREIGN KEY (
-	pId, sId
-)
-REFERENCES PList (
-	pId, sId
-);
-
-ALTER TABLE payment ADD CONSTRAINT FK_Customer_TO_payment_1 FOREIGN KEY (
+ALTER TABLE basket ADD CONSTRAINT FK_Customer_TO_basket_1 FOREIGN KEY (
 	cId
 )
 REFERENCES Customer (
 	cId
 );
 
-ALTER TABLE payment ADD CONSTRAINT FK_PList_TO_payment_1 FOREIGN KEY (
-	pId, sId
+ALTER TABLE basket ADD CONSTRAINT FK_PList_TO_basket_1 FOREIGN KEY (
+	pId, sid
 )
 REFERENCES PList (
-	pId, sId
-);
-ALTER TABLE Question ADD CONSTRAINT FK_pAttachment_TO_Question_1 FOREIGN KEY (
-	fId
-)
-REFERENCES pAttachment (
-	fId
+	pId, sid
 );

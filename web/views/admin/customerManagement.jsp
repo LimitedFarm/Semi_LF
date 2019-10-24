@@ -85,7 +85,7 @@ table th {
 		<div>
 			<div class="adDiv">
 				<!-- 간략한 회원 정보를 출력하는 div -->
-				<div style="width:500px; height: 500px;"> 
+				<div id="exam" style="width:500px; height: 500px;"> 
 				<table id="cuTable">
 					<tr>
 						<th width="50px">번호</th>
@@ -204,7 +204,6 @@ table th {
 					$customerTable.append($headerTr);
 					
 					<% for(Customer c : cuInfo) { %>
-						alert("odk");
 						var $tr = $("<tr>");
 						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid<%=c.getCid()%>","value":"<%=c.getCid()%>"});
 						var $writerTd = $("<td>").text("<%=c.getCid()%>").css("width","50px");
@@ -249,7 +248,7 @@ table th {
 								
 								}
 							});
-
+					
 						}
 
 					});

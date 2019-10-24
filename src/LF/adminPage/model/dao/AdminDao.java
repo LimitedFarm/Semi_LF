@@ -291,7 +291,8 @@ public class AdminDao {
 												rs.getDate("report_date"),
 												rs.getString("status"),
 												rs.getInt("sale_id"),
-												rs.getString("userid"));
+												rs.getString("userid"),
+												rs.getString("pname"));
 				crInfo.add(sr);
 			}
 			

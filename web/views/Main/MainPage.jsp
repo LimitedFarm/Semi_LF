@@ -12,64 +12,69 @@
 <title>Insert title here</title>
 <style>
 	.headerUnder{
-		margin-top:120px;
-	}
-	#mainImg{
-		width: 800px;
-		height:500px;	
-	}
-	#mainGoShop{
-		text-align: center;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate( -50%, -50% );
+		margin-top:110px;
+		width:800px;
+      	height:500px;
+      	background:#f3f3f2;
+      	margin-left:auto;
+      	margin-right:auto;
+      	vertical-align:center;
 	}
 	
   	/* Make the image fully responsive */
   	.carousel-inner img {
-   	   	width:400px;
-   	   	 height:300px;
+   	   	width:100%;
+   	   	height:400px;
   	}
+  	#LF_Carousel{
+  		display:inline-block;
+  		width:100%;
+   	   	height:400px;
+   	   	vertical-align:middle;
+   	   	text-align:center;
+  	}
+  	.carousel-inner{
+  		display:inline-block;
+  		text-align:center;
+  	}
+  	.carousel-item{
+  		display:inline-block;
+  		text-align:center;
+  	}
+  	
 </style>
 </head>
-<body>
+<body style="background-color:#f3f3f2;">
 	<%@ include file="../common/menubar.jsp" %>
 	
-	<div  class="headerUnder" style="text-align:center; background:lightgray" >
-		<div>
-			<img src="../../images/main.png" class="rounded" id="mainImg">
-			<button class="btn btn-success" type="button" id="mainGoShop" style="z-index:100;">Shop Now</button>
-		</div>
-		<br>
-		<hr width="80%">
-		<br>
-		<div id="demo" class="carousel slide" style="align:center; width:400px; data-ride="carousel">
+	<div  class="headerUnder container" >
+		
+		<div id="LF_Carousel" class="carousel slide" style="align:center; width:400px; data-ride="carousel">
 
 			<!-- Indicators -->
 			<ul class="carousel-indicators">
-				<li data-target="#demo" data-slide-to="0" class="active"></li>
-				<li data-target="#demo" data-slide-to="1"></li>
-				<li data-target="#demo" data-slide-to="2"></li>
+				<li data-target="#LF_Carousel" data-slide-to="0" class="active"></li>
+				<li data-target="#LF_Carousel" data-slide-to="1"></li>
+				<li data-target="#LF_Carousel" data-slide-to="2"></li>
 			</ul>
 
 			<!-- The slideshow -->
 			<div class="carousel-inner">
 				<div class="carousel-item active">
-					<img src="../../images/tomato.png" alt="Los Angeles" style="opacity:0.8">
+					<img src="../../images/tomato.png" class="img-responsive center-block" alt="Los Angeles" style="opacity:0.7">
 				</div>
 				<div class="carousel-item">
-					<img src="../../images/strawberry.png" alt="strawberry" style="opacity:0.5">
+					<img src="../../images/strawberry.png" class="img-responsive center-block" alt="strawberry" style="opacity:0.7">
 				</div>
 				<div class="carousel-item">
-					<img src="../../images/cherry.png" alt="New York" style="opacity:0.5">
+					<img src="../../images/cherry.png" class="img-responsive center-block" alt="New York" style="opacity:0.7">
 				</div>
 			</div>
 
 			<!-- Left and right controls -->
-			<a class="carousel-control-prev" href="#demo" data-slide="prev">
+			<a class="carousel-control-prev" href="#LF_Carousel" data-slide="prev">
 				<span class="carousel-control-prev-icon"></span>
-			</a> <a class="carousel-control-next" href="#demo" data-slide="next">
+			</a> <a class="carousel-control-next" href="#LF_Carousel" data-slide="next">
 				<span class="carousel-control-next-icon"></span>
 			</a>
 

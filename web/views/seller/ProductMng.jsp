@@ -19,10 +19,12 @@
 	//리뷰 리스트 불러옴
 	/* ArrayList<Review> rList = (ArrayList<Review>)request.getAttribute("rList"); */
 	
+	/* 
 	Seller seller = (Seller)request.getAttribute("seller");
 	pList plist = (pList)request.getAttribute("plist");
 	pInfo pinfo = (pInfo)request.getAttribute("pinfo");
 	pAttachment pa = (pAttachment)request.getAttribute("pa");
+	*/
 	
 	/* pList pl = new pList();
 	pInfo pi = new pInfo();
@@ -51,12 +53,24 @@
 	margin-top:20px;
 	margin-bottom:20px;
 		}
+	.outer{
+	position: absolute;
+   	margin-top: 130px;
+    width: 800px;
+    height: 500px;
+    display: inline-block;
+    text-align: center;
+	}
+	h1{
+	text-align:left;
+
+	}
 </style>
 </head>
 <body>
 
 
-<%-- <%@ include file="../common/menubar.jsp" %> --%>
+	<%@ include file="../seller/sellerMenubar.jsp" %>
 	
 	<div class="outer">
 		<br>

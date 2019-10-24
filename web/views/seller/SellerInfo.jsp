@@ -36,7 +36,27 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <title>Insert title here</title>
+<style>
+	#sellerMenu{
+		margin-top : 130px;
+		width: 200px; 
+		height: 500px;	
+		display:inline-block;
+		text-align:center;
+	}
+	.outer{
+	position: absolute;
+   	margin-top: 130px;
+    width: 800px;
+    height: 500px;
+    display: inline-block;
+    text-align: center;
+	}
+	h1{
+	text-align:left;
 
+	}
+</style>
 </head>
 <body>
 <!-- 사업자 인증이 완료된 경우에만 사업자 정보 확인 가능 -->
@@ -44,7 +64,7 @@
 <!-- 전화번호, 이메일, 주소, 비밀번호, 비밀번호 확인 등의 계정 정보 수정은 마이페이지에서 수정 -->
 <!-- 사업자 등록 진행상황(미신청, 대기, 완료), 사업자 등록번호, 판매승인여부,  -->
 	<h1>사업자 정보 확인</h1>
-<%-- 	<%@ include file="../common/menubar.jsp"  %>  나중에 기본페이지 정해지면 변경해서 활성화--%>
+	<%@ include file="../seller/sellerMenubar.jsp" %>
 	<div class="SellerInfoArea">
 	<!-- memberJoinForm.jsp에 있는 table을 복사해서 쓰자 -->
 <%-- 	<form id="updateForm" action="<%=request.getContextPath() %>/selregist.me" method="post"> --%>

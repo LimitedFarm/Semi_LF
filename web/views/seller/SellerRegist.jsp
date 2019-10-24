@@ -1,23 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="LF.member.model.vo.*"%>
-<%-- <%
+<%
 //로그인 되어있는 계정 정보 받아오기
-	Customer customer = (Customer)request.getAttribute("customer");
-%> --%>
+	/* Customer customer = (Customer)request.getAttribute("customer"); */
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <title>판매자 회원 신청 및 사업자 인증 페이지</title>
 <style>
-#idCheck{
-		background:orangered;
-		border-radius:5px;
-		width:80px;
-		height:25px;
-		text-align:center;
+	#idCheck{
+			background:orangered;
+			border-radius:5px;
+			width:80px;
+			height:25px;
+			text-align:center;
+		}
+	
+	.outer{
+	position: absolute;
+   	margin-top: 130px;
+    width: 800px;
+    height: 500px;
+    display: inline-block;
+    text-align: center;
+	}
+	h1{
+	text-align:left;
+
 	}
 </style>
 </head>
@@ -25,38 +39,17 @@
 <%-- 
 	 일반 사용자 계정 로그인 된 상태에서만 판매자 회원 신청 가능
 	 로그인 되어있지 않으면 로그인 페이지를 먼저 띄워주고 그 뒤에 신청하도록 함
-	 <script>
-		// 게시판 상세보기 기능 구현하기
-		$(function(){
-			$("#listArea td").mouseenter(function(){
-				$(this).parent().css({"background":"darkgray","cursor":"pointer"});
-			}).mouseout(function(){
-				$(this).parent().css({"background":"black"});
-			}).click(function(){
-				var bid=$(this).parent().children("input").val();
-				
-				//로그인 한 사람만 이용하도록 하자! (include할 메뉴 페이지에 기능 붙여야함)
-				
-				<% 
-				if(loginUser != null){%>
-					location.href="<%=request.getContextPath()%>/detail.bo?bid=" + bid;
-				<%}else{%>
-					alert("로그인 해야만 상세보기가 가능합니다!");
-				<%}
-				%> 
-				// BoardDetailServlet 만들러 ㄱㄱ씽!
-			});
-		});
-		
-	</script>
+	 
    --%>
+   
+   <%@ include file="../seller/sellerMenubar.jsp" %>
   
-	<h1>판매자 회원 신청</h1>
 	
 	<div class="outer">
+	<h1 id="subject">판매자 회원 신청</h1>
 		<br>
 		
- 		<form id="joinForm" action="<%=request.getContextPath() %>/selregist.me" method="post"  encType="multipart/form-data">	 
+ 		<form id="joinForm" action="<%=request.getContextPath() %>/sellerRegist.selr" method="post"  encType="multipart/form-data">	 
 			<table>
 				<tr>
 					<td width="200px">사업자 이름  </td>

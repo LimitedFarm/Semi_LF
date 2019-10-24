@@ -23,7 +23,7 @@ import LF.product.model.vo.pAttachment;
 /**
  * Servlet implementation class SellerRegistServlet
  */
-@WebServlet("/selregist.me")
+@WebServlet("/selregist.selr")
 public class SellerRegistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

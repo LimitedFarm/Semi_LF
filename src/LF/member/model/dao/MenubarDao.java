@@ -33,7 +33,7 @@ public class MenubarDao {
 	public Customer selectCustomer(Connection conn, String userId, String userPwd) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Customer cuInfo = new Customer();
+		Customer cuInfo = null;
 		String query = prop.getProperty("selectCustomer");
 		
 		try {
@@ -56,10 +56,9 @@ public class MenubarDao {
 									rs.getString("groupNum"),
 									rs.getString("status")
 									);
-				
+				System.out.println(cuInfo.getGroupNum() + ": getGroupNum");
 			}
-			
-			
+			System.out.println("testfinish");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -5,6 +5,27 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	#sellerMenu{
+		margin-top : 130px;
+		width: 200px; 
+		height: 500px;	
+		display:inline-block;
+		text-align:center;
+	}
+	.outer{
+	position: absolute;
+   	margin-top: 130px;
+    width: 800px;
+    height: 500px;
+    display: inline-block;
+    text-align: center;
+	}
+	h1{
+	text-align:left;
+
+	}
+</style>
 </head>
 <body>
 <%-- <%@ include file="../common/menubar.jsp" %> --%>

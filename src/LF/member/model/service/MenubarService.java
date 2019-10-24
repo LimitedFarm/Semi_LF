@@ -18,9 +18,6 @@ public class MenubarService {
 		
 		Customer cuInfo = new MenubarDao().selectCustomer(conn, userId, userPwd);
 		
-		if(cuInfo.getCid() == 0) {
-			cuInfo = null;
-		}
 		
 		close(conn);
 		

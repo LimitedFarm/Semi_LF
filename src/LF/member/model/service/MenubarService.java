@@ -46,6 +46,32 @@ public class MenubarService {
 		
 		return adInfo;
 	}
+
+	public int checkSignupId(String id) {
+		Connection conn = getConnection();
+		
+		int result = new MenubarDao().checkSignupId(conn, id);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	public int insertCustomer(Customer customer) {
+		Connection conn = getConnection();
+		
+		int result = new MenubarDao().insertCustomer(conn, customer);
+		
+		if(result >0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	}
 	
 	
 }

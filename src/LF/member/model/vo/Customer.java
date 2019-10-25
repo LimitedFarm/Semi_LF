@@ -15,6 +15,8 @@ public class Customer implements Serializable{
 	private String userPwd;
 	private String userName;
 	private String address;
+	private String address2;
+	private String address3;
 	private String phone;
 	private String email;
 	private Date joinDate;
@@ -24,19 +26,36 @@ public class Customer implements Serializable{
 	
 	public Customer() {}
 
-	public Customer(int cid, String userId, String userPwd,String userName, String address, String phone, String email, Date joinDate,
-			Date modifyDate, String groupNum, String status) {
+	public Customer(int cid, String userId, String userPwd, String userName, String address, String address2,
+			String address3, String phone, String email, Date joinDate, Date modifyDate, String groupNum,
+			String status) {
 		this.cid = cid;
 		this.userId = userId;
 		this.userPwd = userPwd;
 		this.userName = userName;
 		this.address = address;
+		this.address2 = address2;
+		this.address3 = address3;
 		this.phone = phone;
 		this.email = email;
 		this.joinDate = joinDate;
 		this.modifyDate = modifyDate;
 		this.groupNum = groupNum;
 		this.status = status;
+	}
+	
+	
+
+	public Customer(String userId, String userPwd, String userName, String address, String address2, String address3,
+			String phone, String email) {
+		this.userId = userId;
+		this.userPwd = userPwd;
+		this.userName = userName;
+		this.address = address;
+		this.address2 = address2;
+		this.address3 = address3;
+		this.phone = phone;
+		this.email = email;
 	}
 
 	public int getCid() {
@@ -62,7 +81,7 @@ public class Customer implements Serializable{
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}
@@ -77,6 +96,22 @@ public class Customer implements Serializable{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getAddress3() {
+		return address3;
+	}
+
+	public void setAddress3(String address3) {
+		this.address3 = address3;
 	}
 
 	public String getPhone() {
@@ -134,8 +169,11 @@ public class Customer implements Serializable{
 	@Override
 	public String toString() {
 		return "Customer [cid=" + cid + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
-				+ ", address=" + address + ", phone=" + phone + ", email=" + email + ", joinDate=" + joinDate
-				+ ", modifyDate=" + modifyDate + ", groupNum=" + groupNum + ", status=" + status + "]";
+				+ ", address=" + address + ", address2=" + address2 + ", address3=" + address3 + ", phone=" + phone
+				+ ", email=" + email + ", joinDate=" + joinDate + ", modifyDate=" + modifyDate + ", groupNum="
+				+ groupNum + ", status=" + status + "]";
 	}
+
+	
 	
 }

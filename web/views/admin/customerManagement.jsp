@@ -19,163 +19,143 @@
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <!-- 테이블 CDN -->
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+ <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+ 
 <title>회원 관리</title>
 <style>
 .outer{
-	text-align:center;
-	border: 1px solid black;
+	width:1500px;
+}
+.innerDiv{
+	align:center;
 	padding: 5px;	
 	width: 1200px;
 	height: 700px;
 	display:inline-block;
-	margin-top:160px;
+	float:right;
+	margin-top:110px;
 	min-width:1200px;
-}
-.adDiv {
-	display: inline-block;
-	padding: 5px;
-	height: 400px;
-	border:1px solid black;
-	width: 500px;
 }
 #insertCustomer{
 	padding: 5px;
-	width: 400px;
+	width: 1000px;
 	margin-left: 10px;
 	vertical-align : middle;
-	text-align:left;
+	text-align:right;
 	display:inline-block;
-}
-table {
-	border: 1px solid black;
-}
-
-table td {
-	border: 1px solid black;
-	text-align:center
-}
-table th {
-	border: 1px solid black;
-	align: center;
-}
-
-#infoTable {
-	border-collapse: separate;
-	border-spacing: 10px 10px;
-}
-.headerUnder{
-	margin-top:160px
 }
 </style>
 </head>
 <body>
-	<%@ include file = "../admin/adminMenubar.jsp" %>
 	<div class="outer">
-		<div>
-			<h1>&nbsp;&nbsp; 회원 관리</h1>
-			<br>
-			<div id="insertCustomer">
-				<label for="customerId">회원 아이디</label> <input type="text" id="customerId" name="customerId">
-				<button id="searchCustomer">찾기</button>
-			</div>
-			<div id="insertCustomer">
-				<input type="button" value="보류">
-			</div>
-		</div>
-		<div>
-			<div class="adDiv">
-				<!-- 간략한 회원 정보를 출력하는 div -->
-				<div id="exam" style="width:500px; height: 500px;"> 
-				<table id="cuTable">
-					<tr>
-						<th width="50px">번호</th>
-						<th width="150px">아이디</th>
-						
-					</tr>
-					<% if(cuInfo.size() == 0) {%>
-						<tr>
-							<td colspan="2">조회된 리스트가 없습니다.</td>
-						</tr>
-					<% }else {%>
-						<% for(Customer c : cuInfo) {%>
+		<%@ include file="../admin/adminMenubar.jsp"%>
+		
+		<div class="innerDiv">
+			<div class="card" style="min-width:1000px;">
+  				<div class="card-header">
+  					일반 회원
+					<div id="insertCustomer">
+						<label for="customerId">회원 아이디</label> <input type="text" id="customerId" name="customerId">
+						<button id="searchCustomer">찾기</button>
+					</div>
+				</div>
+  				<div class="card-body">
+					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						<thead>
 							<tr>
-								<input type="hidden" value="<%=c.getCid() %>" id="connectCid<%=c.getCid() %>">
-								<td><%=c.getCid() %></td>
-								<td><%=c.getUserId() %></td>
+								<th>회원번호</th>
+								<th>아이디</th>
+								<th>이름</th>
+								<th>주소</th>
+								<th>핸드폰</th>
+								<th>이메일</th>
+								<th>가입날짜</th>
 							</tr>
+						</thead>
+						<tbody id="selectTd">
+							<% if(cuInfo.size() == 0) {%>
+							<tr>
+								<td colspan=7>조회된 회원이 없습니다.</td>
+							</tr>
+						<%} else { %>
+							<%for(Customer c : cuInfo) {%>
+								<tr>
+									<td><%=c.getCid() %></td>
+									<td><%=c.getUserId() %></td>
+									<td><%=c.getUserName() %></td>
+									<td><%=c.getAddress2()%>&nbsp;<%=c.getAddress3() %></td>
+									<td><%=c.getPhone() %></td>
+									<td><%=c.getEmail() %></td>
+									<td><%=c.getJoinDate() %></td>
+								</tr>
+							<%} %>
+							<% for(int i=cuInfo.size(); i<10; i++) {%>
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</tr>
+							<%} %>
 						<%} %>
-					<%} %>
-				</table>
-				</div>
-				<div>
-					<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=1'"> << </button>
-			
-					<!-- 이전 페이지로(<) -->
-					<%if(currentPage <= 1) {%>
-						<button disabled> < </button>
-					<%} else{ %>
-						<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=currentPage-1 %>'"> < </button>
-					<%} %>
-			
-					<!-- 10개의 페이지 목록 -->
-					<%for(int p = startPage; p<=endPage; p++){ %>
-						<% if(p == currentPage){ %>
-					<button disabled><%=p %></button>
-						<%} else{%>
-					<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=p %>'"><%=p %></button>
-						<%} %>
-					<%} %>
-			
-					<!-- 다음 페이지로(>) -->
-					<%if(currentPage >= maxPage){ %>
-						<button disabled> > </button>
-					<%}else{ %>
-						<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=currentPage+1 %>'"> > </button>
-					<%} %>
-			
-					<!-- 맨 끝으로(>>) -->
-					<button onclick="location.href='<%=request.getContextPath() %>/cuInfo.ad?currentPage=<%=maxPage %>'"> >> </button>
-				</div>
-			</div>
-			
-			
-			<div class="adDiv" id="customerInfo">
-				<!-- 회원 상세 정보를 출력하는 div -->
-				<div>
-					<table>
-						<tr>
-							<td>이름</td>
-							<td><input type="text" id="cuName" readonly></td>
-							<td>가입일자</td>
-							<td><input type="text" id="cuJoinDate" readonly></td>
-						</tr>
-						<tr>
-							<td>이메일</td>
-							<td colspan=3><input type="text" id="cuEmail" readonly></td>
-						</tr>
-						<tr>
-							<td colspan=4>주소</td>
-						</tr>
-						<tr>
-							<td colspan=4><input type="text" id="cuAddress" readonly></td>
-						</tr>
+						
+						</tbody>
 					</table>
-				
+					<div>
+						<ul class="pagination" style="float:right;">
+						<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/cuInfo.ad?currentPage=1">FirstPage</a></li>
+						
+						<!-- 이전 페이지로 -->
+						<% if (currentPage <= 1) { %>
+							<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+						<% } else { %>
+							<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/cuInfo.ad?currentPage=<%=currentPage - 1%>">Previous</a></li>
+						<%} %>
+						<!-- 10개의 페이지 목록 -->
+						<% for (int p = startPage; p <= endPage; p++) { %>
+							<% if (p == currentPage) { %>
+								<li class="page-item"><a class="page-link" href="#"><%=p%></a></li>
+							<%} else if(p == endPage && p<(startPage+9) ){%>
+								<%for(int i=endPage+1; i<(startPage+10); i++){ %>
+									<li class="page-item"><a class="page-link" href="#"><%=i%></a></li>
+								<%} %>
+							<% } else { %>
+								<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/cuInfo.ad?currentPage=<%=p%>"><%=p%></a></li>
+							<%} %>
+						<%} %>
+						<!-- 다음 페이지로(>) -->
+						<% if (currentPage >= maxPage) { %>
+							<li class="page-item"><a class="page-link" href="#">Next</a></li>
+						<% } else { %>
+							<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/cuInfo.ad?currentPage=<%=currentPage + 1%>">Next</a></li>
+						<% } %>	
+						<!-- 처음으로 -->
+						
+						<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/cuInfo.ad?currentPage=<%=maxPage%>">LastPage</a></li>
+							
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
+			
 
+		</div>
 	</div>
 	<script>
 		$(function() {
-			// 회원 정보 테이블에 데이터 넣기
-			$(document).on('mouseenter', "#cuTable td", function(){
+			<%-- // 회원 정보 테이블에 데이터 넣기
+			$(document).on('mouseenter', "#selectTd td", function(){
 				$(this).parent().css({"background":"darkgray","cursor":"pointer"});
 			});
-			$(document).on('mouseout', "#cuTable td", function(){
-				$(this).parent().css({"background":"black"});
+			$(document).on('mouseout', "#selectTd td", function(){
+				$(this).parent().css({"background":"white"});
 			});
-			$(document).on('click', "#cuTable td", function(){
+			$(document).on('click', "#selectTd td", function(){
 				var cid=$(this).parent().children("input").val();
 				<% for(Customer cu : cuInfo) {%>
 					if(<%=cu.getCid()%> == cid) {
@@ -186,35 +166,56 @@ table th {
 					}
 				<% } %>
 				
-			});
+			}); --%>
 				
 			// 찾기 기능
 			$("#searchCustomer").click(function(){
 				var searchId = $("#customerId").val();
 				if(searchId == ""){
-					$customerTable = $("#cuTable");
-					$customerTable.html(""); // 초기화
-					
-					var $headerTr = $("<tr>");
-					var $headerCid = $("<th>").text("번호").css("width", "50px");
-					var $headerId = $("<th>").text("아이디").css("width", "150px");
-					
-					$headerTr.append($headerCid);
-					$headerTr.append($headerId);
-					$customerTable.append($headerTr);
+					$selectTd = $("#selectTd");
+					$selectTd.html(""); // 초기화
 					
 					<% for(Customer c : cuInfo) { %>
 						var $tr = $("<tr>");
-						var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid<%=c.getCid()%>","value":"<%=c.getCid()%>"});
-						var $writerTd = $("<td>").text("<%=c.getCid()%>").css("width","50px");
-						var $contentTd = $("<td>").text("<%=c.getUserId()%>").css("width","150px");
+						var $userCId = $("<td>").text("<%=c.getCid()%>");
+						var $userId = $("<td>").text("<%=c.getUserId()%>");
+						var $userName = $("<td>").text("<%=c.getUserName()%>");
+						var $Address = $("<td>").text("<%=c.getAddress2()%> <%=c.getAddress3()%>");
+						var $phone = $("<td>").text("<%=c.getPhone()%>");
+						var $email = $("<td>").text("<%=c.getEmail()%>");
+						var $joinDate = $("<td>").text("<%=c.getJoinDate()%>");
 						
-						$tr.append($hiddenInput);
-						$tr.append($writerTd);
-						$tr.append($contentTd);
-						$customerTable.append($tr);
+						$tr.append($userCId);
+						$tr.append($userId);
+						$tr.append($userName);
+						$tr.append($Address);
+						$tr.append($phone);
+						$tr.append($email);
+						$tr.append($joinDate);
+						$selectTd.append($tr);
 					
 					<%} %>
+					<% if(cuInfo.size() < 10){%>
+						for(var i=<%=cuInfo.size()%>; i<10;i++){
+							var $tr = $("<tr>");
+							var $userCId = $("<td>").text(" ");
+							var $userId = $("<td>").text(" ");
+							var $userName = $("<td>").text(" ");
+							var $Address = $("<td>").text(" ");
+							var $phone = $("<td>").text(" ");
+							var $email = $("<td>").text(" ");
+							var $joinDate = $("<td>").text(".");
+							
+							$tr.append($userCId);
+							$tr.append($userId);
+							$tr.append($userName);
+							$tr.append($Address);
+							$tr.append($phone);
+							$tr.append($email);
+							$tr.append($joinDate);
+							$selectTd.append($tr);
+						}
+					<%}%>
 				}else{
 					$.ajax({
 						url : "/Semi_LF/searchCu.ad",
@@ -223,27 +224,27 @@ table th {
 								searchId : searchId
 							},
 							success : function(data) {
-								$customerTable = $("#cuTable");
-								$customerTable.html(""); // 초기화
-								
-							
+								$selectTd = $("#selectTd");
+								$selectTd.html(""); // 초기화
 								
 								for ( var key in data) {
-										var $headerTr = $("<tr>");
-										var $headerCid = $("<th>").text("번호").css("width", "50px");
-										var $headerId = $("<th>").text("아이디").css("width", "150px");
 										var $tr = $("<tr>");
-										var $hiddenInput = $("<input>").attr({"type":"hidden", "id":"connectCid"+data[key].cid,"value":data[key].cid});
-										var $writerTd = $("<td>").text(data[key].cid).css("width","50px");
-										var $contentTd = $("<td>").text(data[key].userId).css("width","150px");
-
-										$headerTr.append($headerCid);
-										$headerTr.append($headerId);
-										$customerTable.append($headerTr);
-										$tr.append($hiddenInput);
-										$tr.append($writerTd);
-										$tr.append($contentTd);
-										$customerTable.append($tr);
+										var $userCId = $("<td>").text(data[key].cid);
+										var $userId = $("<td>").text(data[key].userId);
+										var $userName = $("<td>").text(data[key].userName);
+										var $Address = $("<td>").text(data[key].address2+" "+ data[key].address3);
+										var $phone = $("<td>").text(data[key].phone);
+										var $email = $("<td>").text(data[key].email);
+										var $joinDate = $("<td>").text(data[key].joinDate);
+										
+										$tr.append($userCId);
+										$tr.append($userId);
+										$tr.append($userName);
+										$tr.append($Address);
+										$tr.append($phone);
+										$tr.append($email);
+										$tr.append($joinDate);
+										$selectTd.append($tr);
 									}
 								
 								}
@@ -253,7 +254,5 @@ table th {
 
 					});
 
-
-		});
 	</script>
 </body>

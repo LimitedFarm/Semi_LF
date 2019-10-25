@@ -84,7 +84,7 @@
 					<button onclick="location.href='<%=request.getContextPath() %>/seInfo.ad?currentPage=<%=p %>'"><%=p %></button>
 						<%} %>
 					<%} %>
-			
+					
 					<!-- 다음 페이지로(>) -->
 					<%if(currentPage >= maxPage){ %>
 						<button disabled> > </button>

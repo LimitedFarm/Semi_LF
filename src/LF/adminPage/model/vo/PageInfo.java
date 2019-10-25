@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class PageInfo implements Serializable{
 
 	/**
-	 * 
+	 * 페이징
 	 */
 	private static final long serialVersionUID = 6131675868539907437L;
 	private int currentPage;

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 import LF.member.model.vo.Admin;
@@ -49,6 +50,8 @@ public class MenubarDao {
 									rs.getString("userPwd"),
 									rs.getString("userName"),
 									rs.getString("address"),
+									rs.getString("address2"),
+									rs.getString("address3"),
 									rs.getString("phone"),
 									rs.getString("email"),
 									rs.getDate("joinDate"),
@@ -138,6 +141,61 @@ public class MenubarDao {
 		
 		
 		return adInfo;
+	}
+
+	public int checkSignupId(Connection conn, String id) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("checkSignupId");
+		
+		try {
+			pstmt =conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+
+	public int insertCustomer(Connection conn, Customer customer) {
+		PreparedStatement pstmt= null;
+
+		String query = prop.getProperty("insertCustomer");
+		int result=0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, customer.getUserId());
+			pstmt.setString(2, customer.getUserPwd());
+			pstmt.setString(3, customer.getUserName());
+			pstmt.setString(4, customer.getAddress());
+			pstmt.setString(5, customer.getAddress2());
+			pstmt.setString(6, customer.getAddress3());
+			pstmt.setString(7, customer.getPhone());
+			pstmt.setString(8, customer.getEmail());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
 	}
 	
 	

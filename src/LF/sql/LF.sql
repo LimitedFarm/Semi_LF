@@ -162,23 +162,25 @@ COMMENT ON COLUMN CReportList.status IS '신고 내역 상태';
 COMMENT ON COLUMN CReportList.sale_Id IS '판매 번호';
 
 CREATE TABLE PList (
-	pId	NUMBER		NOT NULL,
-	sId	NUMBER		NOT NULL,
-	pName	NVARCHAR2(20)		NULL,
-	pPrice	NUMBER		NOT NULL,
-	pCount	NUMBER		NOT NULL,
-	pAddress	NVARCHAR2(50)		NOT NULL,
-	pDay	DATE		NULL,
-	pPeriod	DATE		NULL,
-    pText1 NVARCHAR2(100) NULL,
-    pText2 NVARCHAR2(100) NULL,
-    pText3 NVARCHAR2(100) NULL,
-    pText4 NVARCHAR2(100) NULL,
-    pText5 NVARCHAR2(100) NULL,
-	createDate	DATE	DEFAULT SYSDATE	NULL,
-	pModifyDate	DATE		NULL,
-	status	CHAR(1) CHECK(status in ('Y', 'N')),
-	cateId	NUMBER		NOT NULL
+   pId   NUMBER      NOT NULL,
+   sId   NUMBER      NOT NULL,
+   pName   NVARCHAR2(100)      NULL,
+   pPrice   NUMBER      NOT NULL,
+   pCount   NUMBER      NOT NULL,
+   pAddress   NVARCHAR2(100)      NOT NULL,
+   pDay NVARCHAR2(100)     NULL,
+   pPeriod NVARCHAR2(100)      NULL,
+   Ptext1 NVARCHAR2(200) NULL,
+   Ptext2 NVARCHAR2(200) NULL,
+   Ptext3 NVARCHAR2(200) NULL,
+   Ptext4 NVARCHAR2(200) NULL,
+   Ptext5 NVARCHAR2(200) NULL,
+   pNotice NVARCHAR2(100)      NULL,
+   pDelivery NVARCHAR2(100)      NULL,
+   creareDate DATE DEFAULT SYSDATE	NULL,
+   pModifyDate DATE DEFAULT SYSDATE NULL,
+   status   CHAR(1) CHECK(status in ('Y', 'N')),
+   Cateid    NUMBER      NULL
 );
 
 ALTER TABLE PList
@@ -195,16 +197,6 @@ COMMENT ON COLUMN PList.pPrice IS '상품 가격';
 COMMENT ON COLUMN PList.pCount IS '상품 재고량';
 
 COMMENT ON COLUMN PList.pAddress IS '상품 원산지';
-
-COMMENT ON COLUMN PList.pText1 IS '상품설명1';
-
-COMMENT ON COLUMN PList.pText2 IS '상품설명2';
-
-COMMENT ON COLUMN PList.pText3 IS '상품설명3';
-
-COMMENT ON COLUMN PList.pText4 IS '상품설명4';
-
-COMMENT ON COLUMN PList.pText5 IS '상품설명5';
 
 COMMENT ON COLUMN PList.pDay IS '상품 생산일자';
 
@@ -247,13 +239,13 @@ COMMENT ON COLUMN Answer.cId IS '시퀀스를 통한 회원번호';
 
 CREATE TABLE orderList (
 	sale_Id	NUMBER		NOT NULL,
-	status	CHAR(1) CHECK(status in ('Y', 'N')),
-    pName	NVARCHAR2(20)		NOT NULL,
+	status	CHAR(1) CHECK(status in ('Y', 'N', 'X')),
 	sale_date	DATE	DEFAULT SYSDATE	NOT NULL,
+	pName	NVARCHAR2(20)	NOT NULL,
 	sCount	NUMBER		NOT NULL,
 	daName	NVARCHAR2(20)		NOT NULL,
 	orPhone	NVARCHAR2(20)		NULL,
-	daAddress	NVARCHAR2(50)		NOT NULL,
+	daAddress 	NVARCHAR2(50)		NOT NULL,
 	daMessage	NVARCHAR2(50)		NULL,
 	pId	NUMBER		NOT NULL,
 	sId	NUMBER		NOT NULL,
@@ -266,8 +258,6 @@ MODIFY status DEFAULT 'Y' NOT NULL;
 COMMENT ON COLUMN orderList.sale_Id IS '판매 번호';
 
 COMMENT ON COLUMN orderList.status IS '판매 상태';
-
-COMMENT ON COLUMN orderList.pName IS '상품명';
 
 COMMENT ON COLUMN orderList.sale_date IS '판매 날짜';
 
@@ -291,8 +281,10 @@ CREATE TABLE Customer (
 	cId	NUMBER		NOT NULL,
 	userId	NVARCHAR2(12)		NOT NULL,
 	userPwd	NVARCHAR2(20)		NOT NULL,
-	userName	NVARCHAR2(20)		NOT NULL,
+	userName	NVARCHAR2(20)	NOT NULL,
 	address	NVARCHAR2(50)		NOT NULL,
+	address2  NVARCHAR2(50)		NOT NULL,
+	address3 NVARCHAR2(50)		NOT NULL,
 	phone	NVARCHAR2(11)		NOT NULL,
 	email	NVARCHAR2(50)		NOT NULL,
 	joinDate	DATE	DEFAULT SYSDATE	NOT NULL,
@@ -315,7 +307,11 @@ COMMENT ON COLUMN Customer.userPwd IS '회원비밀번호';
 
 COMMENT ON COLUMN Customer.userName IS '유저 이름';
 
-COMMENT ON COLUMN Customer.address IS '회원 주소';
+COMMENT ON COLUMN Customer.address IS '우편 번호';
+
+COMMENT ON COLUMN Customer.address2 IS '회원 주소';
+
+COMMENT ON COLUMN Customer.address3 IS '상세주소';
 
 COMMENT ON COLUMN Customer.phone IS '회원 전화번호';
 
@@ -339,14 +335,15 @@ COMMENT ON COLUMN Category.cateId IS '카테고리 번호';
 COMMENT ON COLUMN Category.category IS '카테고리 이름';
 
 CREATE TABLE pAttachment (
-	fId	NUMBER		NOT NULL,
-	pId	NUMBER		NULL,
-	file_name	NVARCHAR2(20)		NOT NULL,
-	change_name	NVARCHAR2(100)		NOT NULL,
-	file_path	NVARCHAR2(100)		NOT NULL,
-	upload_date	DATE	DEFAULT SYSDATE	NOT NULL,
-	modify_date	DATE	DEFAULT SYSDATE	NULL,
-	status	CHAR(1) CHECK(status in ('Y', 'N'))
+   fId    NUMBER      NOT NULL,
+   pId   NUMBER  NOT NULL,
+   FILE_NAME NVARCHAR2(100)      NOT NULL,
+   CHANGE_NAME NVARCHAR2(100)      NOT NULL,
+   FILE_PATH NVARCHAR2(100)      NOT NULL,
+   UPLOAD_DATE   DATE   DEFAULT SYSDATE   NOT NULL,
+   MODIFY_DATE DATE NULL,
+   FILELEVEL NUMBER NOT NULL,
+   status   CHAR(1) CHECK(status in ('Y', 'N'))
 );
 
 ALTER TABLE pAttachment

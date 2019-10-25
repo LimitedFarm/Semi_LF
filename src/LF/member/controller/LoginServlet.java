@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 		
 		session.setMaxInactiveInterval(10);
 		
-		response.sendRedirect("views/common/menubar.jsp");
+		response.sendRedirect("views/Main/MainPage.jsp");
 	}
 
 	/**

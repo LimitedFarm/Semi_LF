@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class CReportList implements Serializable{
 	/**
-	 * 
+	 * 고객 신고 내역
 	 */
 	private static final long serialVersionUID = 5664415076191864592L;
 	

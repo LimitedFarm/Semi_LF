@@ -70,7 +70,7 @@ public class SellerInfo extends HttpServlet {
 				ArrayList<Seller> seInfo = aService.selectSeller(currentPage, limit);
 				RequestDispatcher views = null;
 				if(listCount >0) {
-					views = request.getRequestDispatcher("views/admin/sellerManagement.jsp");
+					views = request.getRequestDispatcher("views/admin/adminBoard.jsp");
 					request.setAttribute("seInfo", seInfo);
 					request.setAttribute("pi", page);
 					

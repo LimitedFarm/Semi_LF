@@ -39,7 +39,6 @@ public class LoginServlet extends HttpServlet {
 		Seller seInfo = null;
 		Admin adInfo = null;
 
-		System.out.println(loginInfo);
 		HttpSession session = null;
 		if(loginInfo.getGroupNum() == "1") {
 			session = request.getSession();
@@ -62,8 +61,6 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("adminUser", adInfo);
 		}
 		
-		
-		session.setMaxInactiveInterval(10);
 		
 		response.sendRedirect("views/common/menubar.jsp");
 	}

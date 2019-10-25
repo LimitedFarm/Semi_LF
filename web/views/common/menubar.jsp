@@ -109,7 +109,7 @@
 		</div>
 		<hr>
 	</div>
-	
+
 	<!-- 슬라이드 형식으로 버튼 클릭시 도출되는 메뉴바 -->
 	<div id="menu">
 		<div>
@@ -119,28 +119,28 @@
 				<%} else {%>
 				<button type="button" class="btn btn-light" id="">1</button>
 				<%} %>
+				<button type="button" class="btn btn-light" id="Productlist">상품 게시판</button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
-				<button type="button" class="btn btn-light" id=""></button>
-				<button type="button" class="btn btn-light" id=""></button>
+				<button type="button" class="btn btn-light" id="FAQ">고객센터</button>
 			<%} else if(loginUser.getGroupNum().equals("2")){%>
 				<button type="button" class="btn btn-light" id="">2</button>
+				<button type="button" class="btn btn-light" id="Productlist">상품 게시판</button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
-				<button type="button" class="btn btn-light" id=""></button>
-				<button type="button" class="btn btn-light" id=""></button>
+				<button type="button" class="btn btn-light" id="FAQ">고객센터</button>
 			<%} else {%>
 				<button type="button" class="btn btn-light" id="adminPage">관리자페이지</button>
+				<button type="button" class="btn btn-light" id="Productlist">상품 게시판</button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
 				<button type="button" class="btn btn-light" id=""></button>
-				<button type="button" class="btn btn-light" id=""></button>
-				<button type="button" class="btn btn-light" id=""></button>
+				<button type="button" class="btn btn-light" id="FAQ">고객센터</button>
 			<%} %>
 		</div>
 	</div>
@@ -215,7 +215,7 @@
 				}
 			});
 
-			// 일반회원 버튼
+			// 일반회원 버튼`
 			
 			// 판매자 버튼
 			
@@ -278,6 +278,19 @@
 		$("#logoutBtn").click(function(){
 			location.href = "<%=request.getContextPath()%>/logout.me";	
 		});
+		
+		//고객센터로
+		$("#FAQ").click(function(){
+			location.href = "<%=request.getContextPath()%>/list.fo";
+		});
+		
+		//상품게시판으로
+		$("#Productlist").click(function(){
+			location.href = "<%=request.getContextPath()%>/list.po";
+		});
+
+		
+		
 	</script>
 </body>
 </html>

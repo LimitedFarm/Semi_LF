@@ -1,51 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="LF.product.model.vo.*, LF.member.model.vo.*, java.util.*"%>
-<%
-/*	Seller s = (Seller)request.getAttribute("seller"); 
-	//로그인 된 정보에서 Seller 계정 가져오기
+    pageEncoding="UTF-8" import="LF.product.model.vo.*, LF.member.model.vo.*, java.util.*, java.io.*"%>
 
- 	String bName = s.getbName();
-	String bNum = s.getbNum();
-	String cpNum = s.getCpNum();
-	
-	//물품판매 권한 승인 여부에 따라 문구가 달라야 함
-	String bStatus = s.getbStatus() != 'Y' ? "판매 권한 검토중입니다" : "승인 완료";
-	
-	String bankName = s.getBankName();
-	String acNum = s.getAcName();
-	String acName = s.getAcName();
-	int fId = s.getfId();	//사업자 등록증 봐야 할 거 같다고 생각되면 파일 불러오는거 구현해야 함  */
-	
-	//리뷰 리스트 불러옴
-	/* ArrayList<Review> rList = (ArrayList<Review>)request.getAttribute("rList"); */
-	
-	/* 
-	Seller seller = (Seller)request.getAttribute("seller");
-	pList plist = (pList)request.getAttribute("plist");
-	pInfo pinfo = (pInfo)request.getAttribute("pinfo");
-	pAttachment pa = (pAttachment)request.getAttribute("pa");
-	*/
-	
-	/* pList pl = new pList();
-	pInfo pi = new pInfo();
-	pAttachment pat = new pAttachment(); */
-	
-	String pName = "상품명";
-	int pPrice = 43434343;
-	int pCount = 77373737;
-	String createDate = "물품 등록일, DATE형";
-	String pPeriod ="유통기한, DATE형";
-	String pContent = "상품소개, 제품 정보, 물품정보 테이블에 있는 값이다. 상품소개테두리 만드는 속성 테두리는 border 속성으로 만듭니다. table, th, td 요소에 적용할 수 있습니다. tr 요소에는 적용되지 않습니다. 기본 모양 아무런 꾸밈을 하지 ...";
-	
-	//상품 대표 이미지도 불러와야 함. 대표 이미지는 물품번호가 같은 이미지 중 정보순서가 가장 이른 것(또는 파일 번호가 가장 이른 것)
-	
-%>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <style>
 	.inBtn{
 	margin-left:auto;
@@ -55,11 +17,18 @@
 		}
 	.outer{
 	position: absolute;
-   	margin-top: 130px;
-    width: 800px;
-    height: 500px;
-    display: inline-block;
-    text-align: center;
+   	margin-top: 250px;
+   	pading-top:50px;
+   	top: 150px;
+   	left: 220px;
+    width: 1280;
+    min-width: 1280px;
+    min-height: 800px;
+    display: inline-block; 
+    pading-left:300px;
+	
+	margin:0 auto;
+	
 	}
 	h1{
 	text-align:left;
@@ -70,11 +39,10 @@
 <body>
 
 
-	<%@ include file="../seller/sellerMenubar.jsp" %>
+	<%@ include file="../seller/menubar.jsp" %>
 	
 	<div class="outer">
 		<br>
-		
 		<h2 align="center">판매 상품 관리</h2>
 		
 		<!-- 공지사항 때와 마찬가지로 검색 부분이 있다. 기능 구현은 생략 -->
@@ -106,85 +74,117 @@
 		<!-- 실제로 작업은 아래 스크립트에서 진행해야 함 -->
 		
 		<div class="tableArea">
-			<table id="productTable" align="center" width="90%" border="1px solid black" style="border-collapse:collapse">
-				<tr>
-					<td rowspan="5" width="20%" height="30%">
-						<div align="center" border="1px solid black">image</div>
-					</td>
-					<td rowspan="1" width="65%">상품명 : <%=pName %></td>
-					<td rowspan="5" width="20%">
-						<div class="inBtn" align="center"><button>정보 수정</button></div>	<!-- 판매글 수정 페이지로 이동 -->
-
-						<div class="inBtn" align="center"><button>재고 추가</button></div>	<!-- 팝업 띄워서 재고량만 수정해줌 -->
-
-						<div class="inBtn" align="center"><button>판매 중지</button></div>	<!-- 판매물품의 status 값을 'N'으로 변경해준다 -->
-						
-						<div class="inBtn" align="center"><button>리뷰 확인</button></div>	<!-- 해당 물품번호를 사용해서 판매내역 검색 후 결과값으로 나온 판매번호들을 통해 리뷰에서 다시 검색 : 리뷰 검색용 view를 만드는게 효율상 좋음  -->
-						
-					</td>
-				</tr>
-				<tr>
-					<td rowspan="1">판매 가격 : <%=pPrice %></td>
-				</tr>
-				<tr>
-					<td rowspan="1">재고 상태 : <%=pCount %></td>
-				</tr>
-				<tr>
-					<td rowspan="1">판매 기간 : <%=createDate %> ~ <%=pPeriod %></td>
-				</tr>
-				
-				<tr>
-					<td >
-						상품소개 : <%=pContent %>
-						<br><div align="right">
-							<button>신고하기</button>
-						</div>
-					</td>
-				</tr>
-			</table>
+			
 		</div>
 		
 	</div>
-	<div id="tt">
-	</div>
 	
-	<script>
-	
-	var page = 1;
-	
-	//값 받아오는거는 for문 돌리든 해서 넣기.
-	var pName = "<%=pName%>";
-	var pPrice = <%=pPrice%>;
-	var pCount = <%=pCount%>;
-	var createDate = "<%=createDate%>";
-	var pPeriod = "<%=pPeriod%>";
-	var pContent = "<%=pContent%>";
-	
-	
+ 	<script>
 	 $(document).ready(function(){
-		 	if($("body").height() < $(window).height()){	//화면에 표시된 내용이 적어서 스크롤바가 생기지 않는 경우
-		 		window.alert("There isn't a vertical scroll bar");
+		
+		 	if($("body").height() < $(window).height()){	//화면에 표시된 내용이 적어서 스크롤바가 생기지 않는 경우 => 최초 로딩
+		 		/* window.alert("There isn't a vertical scroll bar"); */
+		 		<%
+					ArrayList<pList> list = (ArrayList<pList>)session.getAttribute("list");
+					ListObj lo = (ListObj)session.getAttribute("lo");
+					
+					System.out.println(list);
+					System.out.println(lo);
+					
+					//상품 대표 이미지도 불러와야 함. 대표 이미지는 물품번호가 같은 이미지 중 정보순서가 가장 이른 것(또는 파일 번호가 가장 이른 것)
+					
+				%>    
+					
+		 		<%if(list.isEmpty()){ %>
+		 			$(".tableArea").append("<a href='"+<%=request.getContextPath()%>+"/views/common/menubar.jsp'>아직 등록된 물품이 없습니다.</a>");
+				<%}else{ %>
+					<%for(pList p : list){ %>
+					//값 받아오는거는 for문 돌리든 해서 넣기.
+					var pName = "<%=p.getpName()%>";
+					var pPrice = <%=p.getpPrice()%>;
+					var pCount = <%=p.getpCount()%>;
+					var createDate = "<%=p.getpDay()%>";
+					var pPeriod = "<%=p.getpPeriod()%>";
+					var pContent = "<%=p.getpText1()%>";
+					
+					$(".tableArea").append("<hr><table id='productTable' align='center' width='90%' border='1px solid black' style='border-collapse:collapse'>"
+							+ "<tr><td rowspan='5' width='20%' height='30%'>" 
+							+ "<div align='center' border='1px solid black'>image</div></td>"
+							+ "<td rowspan='1' width='65%'>상품명 : " + pName + "</td>"
+							+ "<td rowspan='5' width='20%'>"
+							+ "<div class='inBtn' align='center'><button>정보 수정</button></div>"
+							+ "<div class='inBtn' align='center'><button>재고 추가</button></div>"
+							+ "<div class='inBtn' align='center'><button>판매 중지</button></div>"
+							+ "<div class='inBtn' align='center'><button>리뷰 확인</button></div> </td> </tr>"
+							+ "<tr><td rowspan='1'>판매 가격 : " +pPrice+"</td></tr>"
+							+ "<tr><td rowspan='1'>재고 상태 : " +pCount +"</td></tr>"
+							+ "<tr><td rowspan='1'>판매 기간 : " + createDate +"~"+ pPeriod +"</td></tr>"
+							+ "<tr><td>상품소개 : "+pContent + "<br><div align='right'><button>신고하기</button></div></td></tr>"
+							+ "</table>");
+					<%} %>
+				<%} %>
 		 	}
-		 $(window).scroll(function(){	//스크롤 이벤트 
-			if($(window).scrollTop() == $(document).height() - $(window).height()){	//스크롤바 바닥까지 내려가면 내용 추가
-				console.log(++page);
-				$(".tableArea").append("<h1>Page" + page + "</h1>");
-				$(".tableArea").append("<hr><table id='productTable' align='center' width='90%' border='1px solid black' style='border-collapse:collapse'>"
-						+ "<tr><td rowspan='5' width='20%' height='30%'>" 
-						+ "<div align='center' border='1px solid black'>image</div></td>"
-						+ "<td rowspan='1' width='65%'>상품명 : " + pName + "</td>"
-						+ "<td rowspan='5' width='20%'>"
-						+ "<div class='inBtn' align='center'><button>정보 수정</button></div>"
-						+ "<div class='inBtn' align='center'><button>재고 추가</button></div>"
-						+ "<div class='inBtn' align='center'><button>판매 중지</button></div>"
-						+ "<div class='inBtn' align='center'><button>리뷰 확인</button></div> </td> </tr>"
-						+ "<tr><td rowspan='1'>판매 가격 : " +pPrice+"</td></tr>"
-						+ "<tr><td rowspan='1'>재고 상태 : " +pCount +"</td></tr>"
-						+ "<tr><td rowspan='1'>판매 기간 : " + createDate +"~"+ pPeriod +"</td></tr>"
-						+ "<tr><td>상품소개 : "+pContent + "<br><div align='right'><button>신고하기</button></div></td></tr>"
-						+ "</table>");
+		 
+		 	sid = <%=lo.getSid()%>;
+			currentPage = <%=lo.getCurrentPage()%>;
+				
+		  $(window).scroll(function(){	//스크롤 이벤트 
+			if($(window).scrollTop() == $(document).height() - $(window).height()){	//스크롤바 바닥까지 내려가면 내용 추가 스크롤 위치 == 문서길이 - 화면 길이
+				
+				alert("scroll");
+				currentPage++;
+				console.log(sid, currentPage);
 				
 				
+				$.ajax({
+					url : "<%=request.getContextPath()%>/prMngRoad.prod",
+					method:"post",
+					data: {sid : sid, currentPage : currentPage},
+					/* contentType: 'application/json; charset=utf-8', */
+					/* dataType: "json",   */
+					/* beforesend:function(){
+						alert("before");
+						alert(sid, currentPage);
+						console.log("before");
+					}, */
+					success: function(data){
+						alert("clear");
+						console.log("clear");
+						for(var key in data){
+						//값 받아오는거는 for문 돌리든 해서 넣기.
+						var pName = data[key].pName;
+						var pPrice = data[key].pPrice;
+						var pCount = data[key].pCount;
+						var createDate = data[key].createDate;
+						var pPeriod = data[key].pPeriod;
+						var pContent = data[key].pContent;
+						$(".tableArea").append("<hr><table id='productTable' align='center' width='90%' border='1px solid black' style='border-collapse:collapse'>"
+								+ "<tr><td rowspan='5' width='20%' height='30%'>" 
+								+ "<div align='center' border='1px solid black'>image</div></td>"
+								+ "<td rowspan='1' width='65%'>상품명 : " + pName + "</td>"
+								+ "<td rowspan='5' width='20%'>"
+								+ "<div class='inBtn' align='center'><button>정보 수정</button></div>"
+								+ "<div class='inBtn' align='center'><button>재고 추가</button></div>"
+								+ "<div class='inBtn' align='center'><button>판매 중지</button></div>"
+								+ "<div class='inBtn' align='center'><button>리뷰 확인</button></div> </td> </tr>"
+								+ "<tr><td rowspan='1'>판매 가격 : " +pPrice+"</td></tr>"
+								+ "<tr><td rowspan='1'>재고 상태 : " +pCount +"</td></tr>"
+								+ "<tr><td rowspan='1'>판매 기간 : " + createDate +"~"+ pPeriod +"</td></tr>"
+								+ "<tr><td>상품소개 : "+pContent + "<br><div align='right'><button>신고하기</button></div></td></tr>"
+								+ "</table>");
+						}
+					} ,
+					error:function(){
+						alert("error");
+						console.log("error");
+						alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					},
+					complete : function(data) {
+						alert("complete");
+		                 console.log("complete");
+		        }
+
+				}); 
 				
 				//추가해야 할 내용
 				//초기에 데이터 몇개나 불러올 것인지(되도록 스크롤바가 생길 수 있는 만큼의 값을 불러와야 함[대충 5개에서 10개 생각함])

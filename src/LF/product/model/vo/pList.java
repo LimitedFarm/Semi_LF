@@ -14,7 +14,7 @@ public class pList implements Serializable {
 	private int pId;
 	private int sId;
 	private String pName;
-	private int nPrice;
+	private int pPrice;
 	private int pCount;
 	private String pAddress;
 	private String pDay;
@@ -37,14 +37,14 @@ public class pList implements Serializable {
 	}
 
 
-	public pList(int pId, int sId, String pName, int nPrice, int pCount, String pAddress, String pDay, String pPeriod,
+	public pList(int pId, int sId, String pName, int pPrice, int pCount, String pAddress, String pDay, String pPeriod,
 			String pText1, String pText2, String pText3, String pText4, String ptext5, String pNotice, String pDelivery,
 			Date createDate, Date pModifyDate, String status, int cateId) {
 		super();
 		this.pId = pId;
 		this.sId = sId;
 		this.pName = pName;
-		this.nPrice = nPrice;
+		this.pPrice = pPrice;
 		this.pCount = pCount;
 		this.pAddress = pAddress;
 		this.pDay = pDay;
@@ -93,13 +93,13 @@ public class pList implements Serializable {
 	}
 
 
-	public int getnPrice() {
-		return nPrice;
+	public int getpPrice() {
+		return pPrice;
 	}
 
 
-	public void setnPrice(int nPrice) {
-		this.nPrice = nPrice;
+	public void setnPrice(int pPrice) {
+		this.pPrice = pPrice;
 	}
 
 
@@ -255,7 +255,7 @@ public class pList implements Serializable {
 
 	@Override
 	public String toString() {
-		return "pList [pId=" + pId + ", sId=" + sId + ", pName=" + pName + ", nPrice=" + nPrice + ", pCount=" + pCount
+		return "pList [pId=" + pId + ", sId=" + sId + ", pName=" + pName + ", pPrice=" + pPrice + ", pCount=" + pCount
 				+ ", pAddress=" + pAddress + ", pDay=" + pDay + ", pPeriod=" + pPeriod + ", pText1=" + pText1
 				+ ", pText2=" + pText2 + ", pText3=" + pText3 + ", pText4=" + pText4 + ", ptext5=" + ptext5
 				+ ", pNotice=" + pNotice + ", pDelivery=" + pDelivery + ", createDate=" + createDate + ", pModifyDate="

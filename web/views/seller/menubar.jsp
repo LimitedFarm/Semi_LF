@@ -100,9 +100,9 @@ html {
 	<%if(loginUser.getGroupNum().equals("1")) {%> 
 		<li><a href="<%=request.getContextPath() %>/views/seller/SellerRegist.jsp">판매자 등록</a></li>
 	<%}else if(loginUser.getGroupNum().equals("2")) {%>	
-			<li><a href="<%=request.getContextPath() %>/views/seller/SellerInfo.jsp"><span>판매자 정보 관리</span></a></li>
-			<li><a href="<%=request.getContextPath() %>/productMngList.prod?sid=<%=sellerUser.getSid()%>"><span>판매 상품 관리</span></a></li>
-			<li><a href="<%=request.getContextPath() %>/cReportInfo.ad"><span>상품 리뷰 확인</span></a></li>
+			<li><a href="<%=request.getContextPath() %>/sellerInfoMng.selr?fid=<%=sellerUser.getFid()%>"><span>판매자 정보 관리</span></a></li>
+			<li><a href="<%=request.getContextPath() %>/productMngList.prod?sid=<%=sellerUser.getSid()%>"><span>판매 상품 관리</span></a></li> <!-- PrMngListServlet -->
+			<li><a href="<%=request.getContextPath() %>/reviewList.selr?sid=<%=sellerUser.getSid()%>"><span>상품 리뷰 확인</span></a></li>
 			<li><a href="<%=request.getContextPath() %>/sReportInfo.ad"><span>주문 관리</span></a></li>
 			<li><a href="<%=request.getContextPath() %>/selList.ad"><span>매출 관리</span></a></li>
 		<%} %>

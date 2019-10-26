@@ -81,12 +81,10 @@ public class MenubarDao {
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, cid);
-			System.out.println(cid);
 			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				System.out.println("if문");
 				seInfo = new Seller(rs.getInt("sid"),
 									rs.getString("bStatus"),
 									rs.getString("bName"),
@@ -99,7 +97,6 @@ public class MenubarDao {
 									rs.getDate("sModifyDate"),
 									rs.getInt("cid"),
 									rs.getInt("fid"));
-				System.out.println("seller : " + seInfo);
 			}
 			
 		} catch (SQLException e) {

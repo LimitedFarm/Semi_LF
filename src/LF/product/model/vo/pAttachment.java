@@ -32,6 +32,13 @@ public class pAttachment implements Serializable {
 		this.status = status;
 	}
 
+	public pAttachment(int fId, String changeName, String filePath, Date uploadDate) {
+		this.fId = fId;
+		this.changeName = changeName;
+		this.filePath = filePath;
+		this.uploadDate = uploadDate;
+	}
+
 	public int getfId() {
 		return fId;
 	}

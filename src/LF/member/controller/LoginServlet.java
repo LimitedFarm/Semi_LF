@@ -47,8 +47,8 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("loginUser", loginInfo);
 			// 일반 회원 정보 전달
 		}else if(loginInfo.getGroupNum().equals("2")) {
-			System.out.println(loginInfo.getCid());
 			seInfo = new MenubarService().selectSeller(loginInfo.getCid());
+			System.out.println("seInfo : " + seInfo);
 
 			session = request.getSession();
 			// 판매자 정보 전달

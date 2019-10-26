@@ -192,9 +192,6 @@
 	
 	<%@ include file="../seller/menubar.jsp" %>
 
-<%System.out.println(sellerUser.getbName()); 
-System.out.println(loginUser.getGroupNum());
-%>
 	
 		<div class="container">
 			

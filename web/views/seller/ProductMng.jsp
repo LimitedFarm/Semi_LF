@@ -137,7 +137,7 @@
 				
 				
 				$.ajax({
-					url : "<%=request.getContextPath()%>/prMngRoad.prod",
+					url : "<%=request.getContextPath()%>/prMngRoad.prod",		/* PrMngRoad */
 					method:"post",
 					data: {sid : sid, currentPage : currentPage},
 					/* contentType: 'application/json; charset=utf-8', */
@@ -155,9 +155,9 @@
 						var pName = data[key].pName;
 						var pPrice = data[key].pPrice;
 						var pCount = data[key].pCount;
-						var createDate = data[key].createDate;
+						var createDate = data[key].pDay;
 						var pPeriod = data[key].pPeriod;
-						var pContent = data[key].pContent;
+						var pContent = data[key].pText1;
 						$(".tableArea").append("<hr><table id='productTable' align='center' width='90%' border='1px solid black' style='border-collapse:collapse'>"
 								+ "<tr><td rowspan='5' width='20%' height='30%'>" 
 								+ "<div align='center' border='1px solid black'>image</div></td>"
@@ -180,7 +180,6 @@
 						alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 					},
 					complete : function(data) {
-						alert("complete");
 		                 console.log("complete");
 		        }
 

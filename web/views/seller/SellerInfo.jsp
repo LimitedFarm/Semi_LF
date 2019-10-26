@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="LF.member.model.vo.*, java.sql.*"%>
-   
-<!DOCTYPE html>
+    pageEncoding="UTF-8" import="LF.member.model.vo.*, LF.product.model.vo.*, java.sql.*"%>
+
+<% pAttachment img = (pAttachment)session.getAttribute("image"); %> 
 <html>
 <head>
 <meta charset="UTF-8">
@@ -87,7 +87,7 @@
 				
 			</tr>
 			<tr>
-				<td colspan="2"><div><div width="300px" height="300px"><img id="regImg" src="../../sellerImg/examImg.png" width="300px" height="300px"></div></div></td>
+				<td colspan="2"><div><div width="300px" height="300px"><img id="regImg" src="<%=request.getContextPath() %>/sellerImg/<%=img.getChangeName()%>" width="300px" height="300px"></div></div></td>
 			</tr>
 				
 			</table>

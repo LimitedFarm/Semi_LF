@@ -37,26 +37,28 @@ public class SellerDao {
 	public int registImage(Connection conn, ArrayList<pAttachment> fileList, Seller seller) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		
+		String cid = String.valueOf(seller.getCid());
+		System.out.println("registImage seller = " +seller);
+		System.out.println("registImage fileList = " +fileList);
 		String query = prop.getProperty("insertpAttachment");
-		System.out.println("registImage1");
 		try {
 			for(int i=0; i<fileList.size();i++) {
 				pAttachment at = fileList.get(i);
+				
 				pstmt=conn.prepareStatement(query);
 				pstmt.setString(1, at.getFileName());
-				pstmt.setString(2, at.getChangeName()+seller.getSid());
+				pstmt.setString(2, at.getChangeName());
 				pstmt.setString(3, at.getFilePath());
 				
-				result += pstmt.executeUpdate();
+				
+				result = pstmt.executeUpdate();
+				System.out.println("registImage result = " + result);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			close(pstmt);
 		}
-		System.out.println(result + "regiImage");
-		System.out.println("registImage2");
 		
 		// fileList가 가진 파일 갯수만큼의 행이 모두 insert가 되었다면
 		if(result == fileList.size())
@@ -87,25 +89,14 @@ public class SellerDao {
 			pstmt.setString(6, seller.getBankName());
 			pstmt.setInt(7, seller.getCid());
 			
-			System.out.println("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-			System.out.println(seller.getbName());
-			System.out.println(seller.getbNum());
-			System.out.println(seller.getCpNum());
-			System.out.println(seller.getAcNum());
-			System.out.println(seller.getAcName());
-			System.out.println(seller.getBankName());
-			System.out.println(seller.getCid());
-			System.out.println("beforeResult");
+			result = pstmt.executeUpdate();
 			
-			result += pstmt.executeUpdate();
-			System.out.println(result);
-			
+			System.out.println("registSeller = " + result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
 			close(pstmt);
 		}
-		System.out.println("regiSeller2");
 		return result;
 	}
 
@@ -179,6 +170,102 @@ public class SellerDao {
 		
 		return seInfo;
 
+	}
+
+
+
+
+	public pAttachment selectImage(Connection conn, int fid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		pAttachment image = new pAttachment();
+		String query = prop.getProperty("selectImage");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, fid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				image = new pAttachment(
+									rs.getInt("fid"),
+									rs.getString("change_name"),
+									rs.getString("file_path"),
+									rs.getDate("upload_date")
+									);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return image;
+	}
+
+
+
+
+	public int selectFid(Connection conn, ArrayList<pAttachment> fileList) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<pAttachment> list = new ArrayList<pAttachment>();
+		int fid=0;
+		
+		System.out.println("selectFid fileList = " + fileList);
+		String query = prop.getProperty("selectFid");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, fileList.get(0).getChangeName());
+			
+			System.out.println("selectFid fileList.get(0).getChangeName()" + fileList.get(0).getChangeName());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				fid = rs.getInt("fid");
+			}
+			System.out.println("selectFid fid = " + fid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return fid;
+	}
+
+
+
+
+	public int updateFid(Connection conn, Seller seller, int fid) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		System.out.println("updateFid seller = " + seller);
+		System.out.println("updateFid fid = " + fid);
+		
+		String query = prop.getProperty("updateFid");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, fid);
+			pstmt.setInt(2, seller.getCid());
+			
+			result = pstmt.executeUpdate();
+			System.out.println("updateFid result = " + result);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

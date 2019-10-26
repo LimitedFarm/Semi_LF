@@ -87,7 +87,6 @@ public class SellerRegistServlet extends HttpServlet {
 			// MultipartRequest의 참조변수 multiReqeust 선언
 			// --> 선언하는 순간에 MyFileRenamePolicy의 rename메소드가 실행되면서 rename된 파일이 폴더에 저장
 			MultipartRequest multiRequest = new MultipartRequest(request,savePath, maxSize, "UTF-8", new MyFileRenamePolicy());
-
 			// 2_2. DB에 저장하기 위해 change_name과 origin_name 각각의 리스트들을 만들어 주는 작업
 
 			// 다중 파일을 묶어서 업로드(다중파일업로드) 하기 때문에 컬렉션을 사용
@@ -138,7 +137,7 @@ public class SellerRegistServlet extends HttpServlet {
 				pAttachment at = new pAttachment();
 				at.setFilePath(savePath);
 				at.setFileName(originFiles.get(i));
-				at.setChangeName(saveFiles.get(i));
+				at.setChangeName(String.valueOf(cId) + saveFiles.get(i));
 				
 				// 타이틀 이미지가 originFiles에서의 마지막 인덱스이기 때문에 다음과 같이 조건을 준 다음에 level을 0으로 지정
 //				if(i == originFiles.size()-1) {
@@ -156,6 +155,10 @@ public class SellerRegistServlet extends HttpServlet {
 
 			String page="";
 			if (result > 0) {	//성공했을 때
+				System.out.println("saveFiles.get(0) = " + saveFiles.get(0));
+				System.out.println("fileList.get(0).getChangeName() = " + fileList.get(0).getChangeName());
+				new SellerService().renameFile(saveFiles.get(0),fileList.get(0).getChangeName(), savePath);
+				
 				System.out.println("servlet2");
 				request.setAttribute("msg", "등록 완료");
 				request.getRequestDispatcher("views/seller/successPage.jsp").forward(request, response);

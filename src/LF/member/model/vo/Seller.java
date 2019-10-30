@@ -24,18 +24,6 @@ public class Seller implements Serializable{
 	private int fid;
 	
 	public Seller() {}
-	
-	
-
-	public Seller(int sid, String acNum, String acName, String bankName) {
-		super();
-		this.sid = sid;
-		this.acNum = acNum;
-		this.acName = acName;
-		this.bankName = bankName;
-	}
-
-
 
 	public Seller(int sid, String bStatus, String bName, String bNum, String cpNum, String acNum, String acName,
 			String bankName, Date sJoinDate, Date sModifyDate, int cid, int fid) {
@@ -55,19 +43,6 @@ public class Seller implements Serializable{
 
 	
 	
-	
-	
-	public Seller(String bName, String bNum, String cpNum, String acNum, String acName, String bankName, int cid) {
-		super();
-		this.bName = bName;
-		this.bNum = bNum;
-		this.cpNum = cpNum;
-		this.acNum = acNum;
-		this.acName = acName;
-		this.bankName = bankName;
-		this.cid = cid;
-	}
-
 	public int getSid() {
 		return sid;
 	}

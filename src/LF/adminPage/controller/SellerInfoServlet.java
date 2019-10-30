@@ -19,13 +19,13 @@ import LF.member.model.vo.Seller;
  * Servlet implementation class SellerInfo
  */
 @WebServlet("/selInfo.ad")
-public class SellerInfo extends HttpServlet {
+public class SellerInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SellerInfo() {
+    public SellerInfoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,11 +42,7 @@ public class SellerInfo extends HttpServlet {
 				int startPage;		//한번에 표시될 페이지가 시작할 페이지
 				int endPage;		//한번에 표시될 페이지가 끝나는 페이지
 				
-				currentPage = 1;
-				// currentPage가 customerManagement에서 넘어올 경우
-				if(request.getParameter("currentPage") != null) {
-					currentPage = Integer.valueOf(request.getParameter("currentPage"));
-				}
+				currentPage = Integer.valueOf(request.getParameter("currentPage"));
 				
 				AdminService aService = new AdminService();
 				
@@ -56,7 +52,6 @@ public class SellerInfo extends HttpServlet {
 				maxPage = (int)((double)listCount/limit + 0.9);
 				
 				startPage = (((int)((double)currentPage/limit+0.9))-1)*limit + 1;
-				
 				endPage = startPage + limit - 1;
 				
 				endPage = maxPage;

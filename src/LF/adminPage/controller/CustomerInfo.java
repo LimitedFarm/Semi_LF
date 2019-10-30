@@ -33,7 +33,7 @@ public class CustomerInfo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getParameter(name)
+
 		// 페이지 처리를 해주기
 		// 페이지 수 처리용 변수 선언
 		int currentPage;	//현재 페이지를 표시할 변수

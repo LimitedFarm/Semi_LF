@@ -6,11 +6,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<style>
-	
-</style>
 <body>
-	<%@ include file = "../admin/adminMenubar.jsp" %>
-	
+	<div style="position:absolute; top:-300px; left:0px;">
+		<iframe width="1200px" height="620px" src="https://www.kamis.or.kr/customer/main/main.do" scrolling="no" frameborder="0" ></iframe>
+	</div>
 </body>
 </html>

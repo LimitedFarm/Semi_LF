@@ -1,9 +1,10 @@
 package LF.adminPage.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,20 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import LF.adminPage.model.service.AdminService;
-import LF.adminPage.model.vo.CReportList;
+import LF.adminPage.model.vo.PList;
 import LF.adminPage.model.vo.PageInfo;
 
 /**
- * Servlet implementation class cReportInfo
+ * Servlet implementation class SinfoColTable
  */
-@WebServlet("/cReportInfo.ad")
-public class cReportInfo extends HttpServlet {
+@WebServlet("/searchPListCol.ad")
+public class SinfoColTableServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public cReportInfo() {
+    public SinfoColTableServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,9 +36,7 @@ public class cReportInfo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		AdminService as = new AdminService();
-		
+		int sid = Integer.valueOf(request.getParameter("sid"));
 		
 		// 페이지 처리를 해주기
 		// 페이지 수 처리용 변수 선언
@@ -49,11 +48,11 @@ public class cReportInfo extends HttpServlet {
 
 		currentPage = 1;
 		// currentPage가 customerManagement에서 넘어올 경우
-		if (request.getParameter("currentPage") != null) {
-			currentPage = Integer.valueOf(request.getParameter("currentPage"));
-		}
+		currentPage = Integer.valueOf(request.getParameter("currentPage"));
 
-		int listCount = as.crCount();
+		AdminService aService = new AdminService();
+
+		int listCount = aService.getseColCount(sid);
 
 		limit = 10;
 		maxPage = (int) ((double) listCount / limit + 0.9);
@@ -67,23 +66,23 @@ public class cReportInfo extends HttpServlet {
 		if (maxPage < endPage) {
 			endPage = maxPage;
 		}
-		
+
 		PageInfo page = new PageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
+		// 일반 회원의 정보를 가져온다.
 		
-		ArrayList<CReportList> crList = as.selectcReport(currentPage, limit);
+		ArrayList<PList> pList = aService.SinfoSelectCol(sid, currentPage, limit);
 		
-		if(listCount > 0 || currentPage == 1) {
-			RequestDispatcher views = request.getRequestDispatcher("views/admin/CustomerReportMana.jsp");
-			request.setAttribute("crList", crList);
-			request.setAttribute("pi", page);
-			views.forward(request, response);
-		}else if(currentPage > 1){
-			response.setContentType("application/json;");
-			new Gson().toJson(crList,response.getWriter());
-		}else {
-			System.out.println("실패");
-		}
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
+		map.put("plist", pList);
+		map.put("page", page);
+		
+		response.setContentType("application/json");
+		
+		PrintWriter out= response.getWriter();
+		out.print(map);
+		out.flush();
+		out.close();
 		
 	}
 

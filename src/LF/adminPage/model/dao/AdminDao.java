@@ -14,7 +14,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import LF.adminPage.model.vo.AdOrderList;
+import LF.adminPage.model.vo.AdPList;
 import LF.adminPage.model.vo.CReportList;
+import LF.adminPage.model.vo.PList;
+import LF.adminPage.model.vo.SInfo;
 import LF.member.model.vo.Customer;
 import LF.member.model.vo.Seller;
 
@@ -55,6 +59,8 @@ public class AdminDao {
 						rs.getString("userPwd"),
 						rs.getString("userName"),
 						rs.getString("address"),
+						rs.getString("address2"),
+						rs.getString("address3"),
 						rs.getString("phone"),
 						rs.getString("email"),
 						rs.getDate("joinDate"),
@@ -122,6 +128,8 @@ public class AdminDao {
 										rs.getString("userPwd"),
 										rs.getString("userName"),
 										rs.getString("address"),
+										rs.getString("address2"),
+										rs.getString("address3"),
 										rs.getString("phone"),
 										rs.getString("email"),
 										rs.getDate("joinDate"),
@@ -324,6 +332,445 @@ public class AdminDao {
 			e.printStackTrace();
 		} finally {
 			close(stmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+
+	public SInfo selectSInfo(Connection conn, int cid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		SInfo sinfo = null;
+		String query = prop.getProperty("selectSInfo");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, cid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				sinfo = new SInfo(rs.getInt("cid"),
+								rs.getInt("sid"),
+								rs.getString("userId"),
+								rs.getString("userName"),
+								rs.getString("address2"),
+								rs.getString("address3"),
+								rs.getString("phone"),
+								rs.getString("email"),
+								rs.getString("bname"),
+								rs.getString("bnum"),
+								rs.getString("acnum"),
+								rs.getString("acname"),
+								rs.getString("bankname"),
+								rs.getDate("sJoinDate"),
+								rs.getInt("fid"),
+								rs.getString("bstatus"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return sinfo;
+	}
+	
+	public ArrayList<PList> SinfoSelectCol(Connection conn, int sid, int currentPage, int limit) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int startRow = (currentPage-1)*limit +1;	
+		int endRow = startRow + limit -1;
+		
+		ArrayList<PList> pList = new ArrayList();
+		String query = prop.getProperty("SinfoSelectCol");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				PList p = new PList(rs.getInt("PID"),
+									rs.getInt("sid"),
+									rs.getString("pName"),
+									rs.getInt("pPrice"),
+									rs.getInt("pCount"),
+									rs.getString("pAddress"),
+									rs.getString("pDay"),
+									rs.getString("pperiod"),
+									rs.getString("ptext1"),
+									rs.getString("ptext2"),
+									rs.getString("ptext3"),
+									rs.getString("ptext4"),
+									rs.getString("ptext5"),
+									rs.getString("pNotice"),
+									rs.getString("pDelivery"),
+									rs.getDate("createDate"),
+									rs.getDate("pmodifyDate"),
+									rs.getString("status"),
+									rs.getInt("cateId")
+									);
+				pList.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		return pList;
+	}
+	// 테이블에 들어갈 row 갯수
+	public int seTableCount(Connection conn, int sid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("seTableCount");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+	// 물품 리스트 갯수
+	public int getProductListCount(Connection conn) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("ProductListCount");
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rs);
+		}
+		
+		
+		return result;
+	}
+	// 물품 리스트
+	public ArrayList<AdPList> selectProductList(Connection conn, int currentPage, int limit) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<AdPList> plist = new ArrayList();
+		String query = prop.getProperty("selectProductList");
+		
+		int startRow = (currentPage-1)*limit +1;	
+		int endRow = startRow + limit -1;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				AdPList sinfo = new AdPList(rs.getInt("pid"),
+						rs.getString("userName"),
+						rs.getString("userId"),
+						rs.getString("pAddress"),
+						rs.getString("bName"),
+						rs.getString("pName"),
+						rs.getInt("bCount"),
+						rs.getInt("pPrice"),
+						rs.getString("pDay"),
+						rs.getInt("cateId"),
+						rs.getString("status"));
+				
+				plist.add(sinfo);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close(pstmt);
+			close(rs);
+		}
+		
+		return plist;
+	}
+	// 판매물품 상태 변경
+	public int updatePdStatus(Connection conn, int pid, String status) {
+		PreparedStatement pstmt = null;
+
+		int result = 0;
+		String query = prop.getProperty("updatePdStatus");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, status);
+			pstmt.setInt(2, pid);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+	// 주문 내역 갯수
+	public int getOrderListCount(Connection conn) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("OrderListCount");
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+
+	public ArrayList<AdOrderList> selectOrdertList(Connection conn, int currentPage, int limit) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<AdOrderList> oList = new ArrayList();
+		String query = prop.getProperty("selectOrdertList");
+		int startRow = (currentPage-1)*limit +1;	
+		int endRow = startRow + limit -1;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				AdOrderList ad = new AdOrderList(rs.getInt("sale_id"),
+												rs.getString("status"),
+												rs.getDate("sale_Date"),
+												rs.getString("pName"),
+												rs.getString("userId"),
+												rs.getInt("sCount"),
+												rs.getString("daName"),
+												rs.getString("orPhone"),
+												rs.getString("daAddress"),
+												rs.getInt("pid"),
+												rs.getInt("cid"));
+				
+				oList.add(ad);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return oList;
+	}
+
+	public int UpdateRefund(Connection conn, int saleId) {
+		PreparedStatement pstmt = null;
+
+		int result = 0;
+		String query = prop.getProperty("UpdateRefund");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, saleId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+	public int getsViewColCount(Connection conn, int sid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("getsViewColCount");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+	// 한명의 판매자 등록 물품 정보
+	public ArrayList<PList> sViewPTableCol(Connection conn, int sid, int currentPage, int limit) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<PList> pList = new ArrayList<PList>();
+		String query = prop.getProperty("sViewPTableCol");
+		
+		int startRow = (currentPage-1)*limit +1;	
+		int endRow = startRow + limit -1;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				PList p = new PList(rs.getInt("pid"),
+									rs.getString("pName"),
+									rs.getInt("pPrice"),
+									rs.getString("pday"),
+									rs.getString("PPERIOD"),
+									rs.getDate("createdate"),
+									rs.getString("status"));
+				
+				pList.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return pList;
+	}
+
+	public int pChartDate(Connection conn, int pid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("pChartDate");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pid);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		
+		
+		return result;
+	}
+
+	public int pInventory(Connection conn, int pid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("pInventory");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result =rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		return result;
+	}
+
+	public int pChartAllDate(Connection conn, int sid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("pChartAllDate");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
+		}
+		
+		
+		
+		return result;
+	}
+
+	public int pAllInventory(Connection conn, int sid) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		String query = prop.getProperty("pAllInventory");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, sid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result =rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
 			close(rs);
 		}
 		

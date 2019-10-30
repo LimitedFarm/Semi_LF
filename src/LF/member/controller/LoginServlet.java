@@ -1,6 +1,9 @@
 package LF.member.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,23 +43,28 @@ public class LoginServlet extends HttpServlet {
 		Admin adInfo = null;
 
 		System.out.println(loginInfo);
-		HttpSession session = null;
-		if(loginInfo.getGroupNum() == "1") {
-			session = request.getSession();
+		HttpSession session = request.getSession();;
+		if(loginInfo.getCid() == 0) {
+			request.getSession().invalidate();
+			PrintWriter writer = response.getWriter();
+			writer.println("<script>alert('아이디 및 비밀번호를 확인해주세요.'); location.href='views/member/MainPag.jsp';</script>");
+			writer.flush();
+			writer.close();
+			return;
+		}else if(loginInfo.getGroupNum().equals("1")) {
 			
 			session.setAttribute("loginUser", loginInfo);
 			// 일반 회원 정보 전달
-		}else if(loginInfo.getGroupNum() == "2"){
+		}else if(loginInfo.getGroupNum().equals("2")){
 			seInfo = new MenubarService().selectSeller(loginInfo.getCid());
 
-			session = request.getSession();
+			System.out.println(seInfo);
 			// 판매자 정보 전달
 			session.setAttribute("loginUser", loginInfo);
 			session.setAttribute("sellerUser", seInfo);
-		}else {
+		}else if(loginInfo.getGroupNum().equals("3")){
 			adInfo = new MenubarService().selectAdmin(loginInfo.getCid());
 
-			session = request.getSession();
 			// 어드민 정보 전달
 			session.setAttribute("loginUser", loginInfo);
 			session.setAttribute("adminUser", adInfo);
@@ -65,7 +73,7 @@ public class LoginServlet extends HttpServlet {
 		
 		session.setMaxInactiveInterval(10);
 		
-		response.sendRedirect("views/common/menubar.jsp");
+		response.sendRedirect("views/member/MainPag.jsp");
 	}
 
 	/**

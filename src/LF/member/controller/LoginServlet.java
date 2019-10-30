@@ -41,12 +41,12 @@ public class LoginServlet extends HttpServlet {
 
 		System.out.println(loginInfo);
 		HttpSession session = null;
-		if(loginInfo.getGroupNum() == "1") {
+		if(loginInfo.getGroupNum().equals("1")) {
 			session = request.getSession();
 			
 			session.setAttribute("loginUser", loginInfo);
 			// 일반 회원 정보 전달
-		}else if(loginInfo.getGroupNum() == "2"){
+		}else if(loginInfo.getGroupNum().equals("2")){
 			seInfo = new MenubarService().selectSeller(loginInfo.getCid());
 
 			session = request.getSession();

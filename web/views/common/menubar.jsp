@@ -115,6 +115,7 @@
 </style>
 </head>
 <body>
+
 	<!-- header역할을 하며 로그인, 회원가입, 메뉴바를 열수 있는 버튼을 생성 -->
 	<div class="navbar navbar-expand-sm bg-light navbar-dark fixed-top row" id="headerDiv"style="min-width: 1200px; z-index:1055; float:top;" >
 		<div class="headerNavi col-sm-1" align="left" >
@@ -136,6 +137,7 @@
 				</ul>
 			<%} %>
 		</div>
+		
 		<hr>
 	</div>
 	
@@ -192,6 +194,7 @@
 			</div>
 		</div>
 		</form>
+		
 	</div>
 	<%} %>
 	
